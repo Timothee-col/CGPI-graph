@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rockfi × CGP — LinkedIn connections</title>
+<title>Rockfi × Leleu × CNCGP — Croisement LinkedIn</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -30,7 +30,7 @@
     color: #c8c8d4;
     display: none;
     z-index: 100;
-    max-width: 260px;
+    max-width: 280px;
     backdrop-filter: blur(12px);
     font-family: 'IBM Plex Sans', sans-serif;
   }
@@ -72,6 +72,16 @@
     font-family: 'IBM Plex Mono', monospace;
   }
   #stats .stat-val { color: #a78bfa; font-weight: 500; }
+  #stats .stat-multi { color: #fbbf24; font-weight: 500; }
+  #stats .stat-tier3 { color: #f87171; font-weight: 500; }
+  #stats .stat-title {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    color: #6060a0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
 
   #filters {
     position: fixed;
@@ -94,10 +104,81 @@
     transition: all 0.2s;
     backdrop-filter: blur(8px);
     text-align: left;
+    min-width: 180px;
   }
   .fbtn:hover { border-color: rgba(140,120,255,0.3); color: #c0c0d0; }
   .fbtn.active { border-color: rgba(140,120,255,0.5); color: #d4c8ff; background: rgba(100,80,200,0.12); }
+  .fbtn.external { border-color: rgba(20,184,166,0.25); }
+  .fbtn.external:hover { border-color: rgba(20,184,166,0.5); color: #5eead4; }
+  .fbtn.external.active { border-color: rgba(20,184,166,0.7); color: #5eead4; background: rgba(20,184,166,0.10); }
   .fbtn .fbtn-count { float: right; color: #6060a0; margin-left: 12px; font-family: 'IBM Plex Mono', monospace; }
+
+  #card {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 340px;
+    background: rgba(18,18,24,0.96);
+    border: 1px solid rgba(140,120,255,0.25);
+    border-radius: 12px;
+    padding: 18px 20px;
+    backdrop-filter: blur(12px);
+    z-index: 80;
+    display: none;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: #c8c8d4;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  #card.external { border-color: rgba(20,184,166,0.4); }
+  #card .card-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #6060a0;
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  #card .card-close:hover { color: #d4c8ff; background: rgba(140,120,255,0.1); }
+  #card .card-name { font-weight: 600; color: #e8e8f0; font-size: 16px; margin-bottom: 4px; padding-right: 24px; }
+  #card .card-org { color: #a0a0b8; font-size: 12px; margin-bottom: 10px; }
+  #card .card-row { font-size: 12px; line-height: 1.6; margin-top: 6px; }
+  #card .card-label { color: #6060a0; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  #card .card-conn { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  #card .card-chip { background: rgba(124,108,240,0.15); border: 1px solid rgba(140,120,255,0.3); color: #d4c8ff; padding: 2px 8px; border-radius: 6px; font-size: 11px; }
+  #card .card-chip.external { background: rgba(20,184,166,0.15); border-color: rgba(20,184,166,0.4); color: #5eead4; }
+  #card .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: rgba(0,119,181,0.15);
+    border: 1px solid rgba(0,119,181,0.4);
+    border-radius: 6px;
+    color: #4ea8e8;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s;
+    word-break: break-all;
+  }
+  #card .card-link:hover { background: rgba(0,119,181,0.25); color: #7ec0ef; }
+  #card .card-tier {
+    margin-top: 10px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    text-align: center;
+  }
+  #card .card-tier.t4 { background: rgba(248,113,113,0.20); border: 1px solid rgba(248,113,113,0.55); color: #fca5a5; }
+  #card .card-tier.t3 { background: rgba(248,113,113,0.15); border: 1px solid rgba(248,113,113,0.4); color: #fca5a5; }
+  #card .card-tier.t2 { background: rgba(251,191,36,0.15); border: 1px solid rgba(251,191,36,0.4); color: #fde68a; }
 </style>
 </head>
 <body>
@@ -105,78 +186,179 @@
 
 <div id="tooltip"></div>
 
+<div id="card">
+  <button class="card-close" onclick="closeCard()">×</button>
+  <div id="card-body"></div>
+</div>
+
 <div id="stats">
-  <span class="stat-val">38</span> CGPs connectés<br>
-  <span class="stat-val">3</span> multi-connectés<br>
-  <span class="stat-val">41</span> edges
+  <div class="stat-title">Croisement CNCGP</div>
+  <span class="stat-val">130</span> CGP CNCGP connectés<br>
+  <span class="stat-multi">16</span> communs (≥2)<br>
+  <span class="stat-tier3">3</span> communs à 3+
 </div>
 
 <div id="legend">
-  <div class="leg-title">Nodes</div>
-  <div class="leg-row"><div class="leg-dot" style="background:#a78bfa;width:12px;height:12px"></div> Rockfi team</div>
-  <div class="leg-row"><div class="leg-dot" style="background:#34d399"></div> Associé unique</div>
-  <div class="leg-row"><div class="leg-dot" style="background:#fb923c"></div> New Gen CGP</div>
-  <div class="leg-row"><div class="leg-dot" style="background:#60a5fa"></div> Jeune en croissance</div>
-  <div style="margin-top:6px" class="leg-title">Edges</div>
-  <div class="leg-row"><div class="leg-line" style="border-color:rgba(167,139,250,0.5)"></div> Single connection</div>
-  <div class="leg-row"><div class="leg-line" style="border-color:#fbbf24;border-width:2px"></div> Multi-connected</div>
+  <div class="leg-title">Personnes</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#a78bfa;width:12px;height:12px"></div> Rockfi (Damien, Pierre, Olric, Sahira)</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#14b8a6;width:12px;height:12px"></div> Externe (Leleu)</div>
+  <div style="margin-top:6px" class="leg-title">CGP</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#34d399"></div> Confiance Élevée</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#fb923c"></div> Confiance Moyenne</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#fbbf24"></div> Connecté à 2 personnes</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#f87171"></div> Connecté à 3+ personnes</div>
 </div>
 
 <div id="filters">
-  <button class="fbtn active" onclick="setFilter('all')">All<span class="fbtn-count">38</span></button>
-  <button class="fbtn" onclick="setFilter('Sébastien Leleu')">S. Leleu<span class="fbtn-count">26</span></button>
-  <button class="fbtn" onclick="setFilter('Olric')">Olric<span class="fbtn-count">7</span></button>
-  <button class="fbtn" onclick="setFilter('Sahirah')">Sahirah<span class="fbtn-count">5</span></button>
-  <button class="fbtn" onclick="setFilter('Marie')">Marie<span class="fbtn-count">3</span></button>
+  <button class="fbtn active" onclick="setFilter('all', event)">All<span class="fbtn-count">130</span></button>
+  <button class="fbtn" onclick="setFilter('damien', event)">Damien<span class="fbtn-count">12</span></button>
+  <button class="fbtn" onclick="setFilter('pierre', event)">Pierre<span class="fbtn-count">21</span></button>
+  <button class="fbtn" onclick="setFilter('olric', event)">Olric<span class="fbtn-count">19</span></button>
+  <button class="fbtn" onclick="setFilter('sahira', event)">Sahira<span class="fbtn-count">17</span></button>
+  <button class="fbtn external" onclick="setFilter('leleu', event)">Leleu (externe)<span class="fbtn-count">82</span></button>
+  <button class="fbtn" onclick="setFilter('multi', event)">Multi-connectés<span class="fbtn-count">16</span></button>
 </div>
 
 <script>
-const ROCKFI = [
-  { id:'r0', name:'Sébastien Leleu', short:'S. Leleu', type:'rockfi' },
-  { id:'r1', name:'Olric', short:'Olric', type:'rockfi' },
-  { id:'r2', name:'Sahirah', short:'Sahirah', type:'rockfi' },
-  { id:'r3', name:'Marie', short:'Marie', type:'rockfi' },
+const ANCHORS = [
+  { id:'damien', name:'Damien', short:'Damien', type:'anchor', external:false, totalConn:426, angle:-1.570796 },
+  { id:'pierre', name:'Pierre', short:'Pierre', type:'anchor', external:false, totalConn:788, angle:-0.314159 },
+  { id:'olric', name:'Olric', short:'Olric', type:'anchor', external:false, totalConn:553, angle:0.942478 },
+  { id:'sahira', name:'Sahira', short:'Sahira', type:'anchor', external:false, totalConn:377, angle:2.199115 },
+  { id:'leleu', name:'Leleu', short:'Leleu', type:'anchor', external:true, totalConn:990, angle:3.455752 }
 ];
 
 const CGPS = [
-  { id:'c0', name:'Hubert GIRONDEL', org:'Initial Family Office', segment:'Associé unique', conn:['r3','r1'] },
-  { id:'c1', name:'Johan DIDOUCHE', org:'J.A.M Conseil', segment:'Associé unique', conn:['r1','r0'] },
-  { id:'c2', name:'Nadim TAKCHI', org:'Openstone', segment:'New Gen CGP', conn:['r3','r1'] },
-  { id:'c3', name:'Anthony CROS', org:'Cros Investing', segment:'Associé unique', conn:['r0'] },
-  { id:'c4', name:'Antoine DELON', org:'Irbis Solutions', segment:'Associé unique', conn:['r0'] },
-  { id:'c5', name:'Benjamin DURAND', org:'B Durand Capital', segment:'Associé unique', conn:['r0'] },
-  { id:'c6', name:'Bernard WEILL', org:'Cecase', segment:'Associé unique', conn:['r0'] },
-  { id:'c7', name:'Charles COULOMBAN', org:'B-Investissement', segment:'New Gen CGP', conn:['r0'] },
-  { id:'c8', name:'David FERRIER', org:'Ferrier Conseils', segment:'Associé unique', conn:['r0'] },
-  { id:'c9', name:'Emilie CHARBONNEL', org:'Alytis GP', segment:'Associé unique', conn:['r0'] },
-  { id:'c10', name:'Fabien CABEZON', org:'HGP', segment:'Associé unique', conn:['r0'] },
-  { id:'c11', name:'Florent BARBIER', org:'Patrimoine Pierre & Fin.', segment:'New Gen CGP', conn:['r0'] },
-  { id:'c12', name:'François MAZET', org:'MV Partenaires', segment:'New Gen CGP', conn:['r0'] },
-  { id:'c13', name:'F.-X. Lenier', org:'Facteur 7', segment:'Jeune en croissance CNCGP - Portable', conn:['r0'] },
-  { id:'c14', name:'Malcolm VINCENT', org:'Parisii GP', segment:'New Gen CGP', conn:['r0'] },
-  { id:'c15', name:'Marianne NAVARRE', org:'M. Navarre Conseil', segment:'Associé unique', conn:['r0'] },
-  { id:'c16', name:'Marion CHAPEL-MASSOT', org:'Decarion Office', segment:'Associé unique', conn:['r0'] },
-  { id:'c17', name:'Matthieu PAQUIER', org:'Orkestra Partners', segment:'Associé unique', conn:['r0'] },
-  { id:'c18', name:'Nicolas STOCLET', org:'Opaline Patrimoine', segment:'Associé unique', conn:['r0'] },
-  { id:'c19', name:'Ninon MANARANCHE-M.', org:'Amanthee Patrimoine', segment:'New Gen CGP', conn:['r0'] },
-  { id:'c20', name:'Olivier VASSEUR', org:'LDV Patrimoine', segment:'Associé unique', conn:['r0'] },
-  { id:'c21', name:'Pascal BADIER', org:'Milestone Financement', segment:'New Gen CGP', conn:['r0'] },
-  { id:'c22', name:'Pascal MARTIN', org:'IFIP', segment:'Associé unique', conn:['r0'] },
-  { id:'c23', name:'Romain ELMOSNINO', org:'Vested GP', segment:'New Gen CGP', conn:['r0'] },
-  { id:'c24', name:'Ruben AOUIZERATE', org:'Beyond Wealth', segment:'Associé unique', conn:['r0'] },
-  { id:'c25', name:'S.-J. Galadima', org:'Sapians', segment:'Jeune en croissance CNCGP - Portable', conn:['r0'] },
-  { id:'c26', name:'Stéphane CARLUCCI', org:'Petram F.O.', segment:'Associé unique', conn:['r0'] },
-  { id:'c27', name:'Yoann RICHARD', org:'Eurassur', segment:'Associé unique', conn:['r0'] },
-  { id:'c28', name:'Ethel MOLINA', org:'Ma Gestion Privée', segment:'Associé unique', conn:['r2'] },
-  { id:'c29', name:'Mathieu SANLAVILLE', org:'Norma Conseils', segment:'New Gen CGP', conn:['r2'] },
-  { id:'c30', name:'Simon LOLMEDE', org:'Origami 31', segment:'New Gen CGP', conn:['r2'] },
-  { id:'c31', name:'Stéphane VAN HUFFEL', org:'SVH Conseils', segment:'Associé unique', conn:['r2'] },
-  { id:'c32', name:'Tathy DIALLO', org:'Opes Patrimoine', segment:'Associé unique', conn:['r2'] },
-  { id:'c33', name:'F.-X. SOEUR', org:'Terrae Patrimoine', segment:'New Gen CGP', conn:['r1'] },
-  { id:'c34', name:'Loïc GACH', org:'Outmatch Invest', segment:'New Gen CGP', conn:['r1'] },
-  { id:'c35', name:'Matthieu MANCUSO', org:'Egeo Conseil', segment:'Associé unique', conn:['r1'] },
-  { id:'c36', name:'Yann LE HER', org:'23IS', segment:'Associé unique', conn:['r1'] },
-  { id:'c37', name:'Jülide NINEK', org:'JLDN Conseils', segment:'Associé unique', conn:['r3'] },
+  { id:'c0', name:'Stephan CLERJAUD', org:'EQUITRI', cabCount:1, linkedin:'https://fr.linkedin.com/in/stephanclerjaud', confiance:'Elevee', conn:['damien','pierre','olric','leleu'] },
+  { id:'c1', name:'Benoist LOMBARD', org:'LAPLACE', cabCount:1, linkedin:'https://fr.linkedin.com/in/benoist-lombard-451110', confiance:'Elevee', conn:['damien','pierre','olric','leleu'] },
+  { id:'c2', name:'Vincent CRUGEON', org:'FRANCE FINANCE CONSULTING', cabCount:1, linkedin:'https://fr.linkedin.com/in/vincent-crugeon-58b08b2', confiance:'Elevee', conn:['pierre','sahira','leleu'] },
+  { id:'c3', name:'Olivier BONTOUX', org:'MYWAY FAMILY OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/olivier-bontoux-00a6714', confiance:'Elevee', conn:['pierre','leleu'] },
+  { id:'c4', name:'Jean Marc BROUILLARD', org:'NEWBEES SOLUTIONS (+2 cabinets)', cabCount:3, linkedin:'https://fr.linkedin.com/in/jean-marc-brouillard-8570858', confiance:'Elevee', conn:['damien','leleu'] },
+  { id:'c5', name:'Eugène CONSTANT', org:'AMBRE GESTION DE PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/eugeneconstantgestionpatrimoine/', confiance:'Elevee', conn:['pierre','leleu'] },
+  { id:'c6', name:'Johan DIDOUCHE', org:'J.A.M CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/johandidouche/', confiance:'Moyenne', conn:['olric','leleu'] },
+  { id:'c7', name:'Maxime DURAND', org:'AGAPE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/maxime-durand-agape-patrimoine', confiance:'Elevee', conn:['damien','sahira'] },
+  { id:'c8', name:'Souleymane-Jean GALADIMA', org:'SAPIANS', cabCount:1, linkedin:'https://fr.linkedin.com/in/souleymane-jean-galadima', confiance:'Elevee', conn:['pierre','leleu'] },
+  { id:'c9', name:'Sandrine GENET', org:'CARAT CAPITAL', cabCount:1, linkedin:'https://fr.linkedin.com/in/sandrine-genet', confiance:'Elevee', conn:['pierre','leleu'] },
+  { id:'c10', name:'Emmanuel NARRAT', org:'HAUSSMANN PATRIMOINE (+3 cabinets)', cabCount:4, linkedin:'https://fr.linkedin.com/in/emmanuel-narrat-7033a61', confiance:'Elevee', conn:['olric','leleu'] },
+  { id:'c11', name:'Marianne NAVARRE', org:'MARIANNE NAVARRE CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/marianne-navarre-2561a32/', confiance:'Elevee', conn:['pierre','leleu'] },
+  { id:'c12', name:'Nicolas ONEN', org:'H360 CONSEILS', cabCount:1, linkedin:'https://www.linkedin.com/in/onennicolas/', confiance:'Elevee', conn:['sahira','leleu'] },
+  { id:'c13', name:'Arnaud PERRIER', org:'INKIPIT FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/arnaud-perrier-3086533/', confiance:'Elevee', conn:['pierre','leleu'] },
+  { id:'c14', name:'JOHANN SCHWIMANN', org:'SEVEN CAPITAL MANAGEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/johann-schwimann-1948406', confiance:'Elevee', conn:['sahira','leleu'] },
+  { id:'c15', name:'Malcolm VINCENT', org:'BC FINANCES (+14 cabinets)', cabCount:15, linkedin:'https://fr.linkedin.com/in/malcolm-vincent-astoria', confiance:'Elevee', conn:['pierre','leleu'] },
+  { id:'c16', name:'Jean-Luc ABERT', org:'A.I.C. PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/jean-luc-abert-9a913618', confiance:'Elevee', conn:['leleu'] },
+  { id:'c17', name:'Ruben AOUIZERATE', org:'BEYOND WEALTH', cabCount:1, linkedin:'https://fr.linkedin.com/in/ruben-aouizerate-58117319', confiance:'Elevee', conn:['leleu'] },
+  { id:'c18', name:'Johann AUBERT', org:'H\'ARPE CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/johann-aubert-ba687b110', confiance:'Elevee', conn:['sahira'] },
+  { id:'c19', name:'Marc AUCHABIE', org:'NOVAM', cabCount:1, linkedin:'https://fr.linkedin.com/in/marcauchabie', confiance:'Elevee', conn:['leleu'] },
+  { id:'c20', name:'Meyer AZOGUI', org:'CYRUS HEREZ (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/meyerazogui', confiance:'Elevee', conn:['leleu'] },
+  { id:'c21', name:'Guillaume BACHY', org:'TRIUM ASSOCIÉS', cabCount:1, linkedin:'https://fr.linkedin.com/in/guillaume-bachy', confiance:'Elevee', conn:['olric'] },
+  { id:'c22', name:'Pascal BADIER', org:'MILESTONE (+2 cabinets)', cabCount:3, linkedin:'https://www.linkedin.com/in/pascalbadier/', confiance:'Elevee', conn:['leleu'] },
+  { id:'c23', name:'Florent BARBIER', org:'PATRIMOINE PIERRE ET FINANCES', cabCount:1, linkedin:'https://www.linkedin.com/in/florent-barbier-20140016/', confiance:'Elevee', conn:['leleu'] },
+  { id:'c24', name:'Dimitri BARCELONE', org:'KANOPE', cabCount:1, linkedin:'https://fr.linkedin.com/in/dimitri-barcelone-4a3a9012', confiance:'Elevee', conn:['leleu'] },
+  { id:'c25', name:'Gilles BELLOIR', org:'SAS PLACEMENT DIRECT', cabCount:1, linkedin:'https://fr.linkedin.com/in/gilles-belloir-12a2471', confiance:'Elevee', conn:['leleu'] },
+  { id:'c26', name:'Edouard BINET', org:'PEETERS PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/edouardbinet/', confiance:'Elevee', conn:['damien'] },
+  { id:'c27', name:'Franck BONIN', org:'OSEIS GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/franck-bonin-4a998040', confiance:'Moyenne', conn:['olric'] },
+  { id:'c28', name:'Mario BOSSETTI', org:'TAORMINA CAPITAL', cabCount:1, linkedin:'https://fr.linkedin.com/in/mario-bossetti-12715017', confiance:'Moyenne', conn:['leleu'] },
+  { id:'c29', name:'Jean-Baptiste BRETTE', org:'ONLY 2F (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/jean-baptiste-brette-5559b910', confiance:'Elevee', conn:['leleu'] },
+  { id:'c30', name:'Paul BUZY', org:'FAP-INVEST', cabCount:1, linkedin:'https://www.linkedin.com/in/paul-buzy-62564a130/', confiance:'Elevee', conn:['sahira'] },
+  { id:'c31', name:'Fabien Bismuth', org:'FINANCIÈRE MEESCHAERT', cabCount:1, linkedin:'https://fr.linkedin.com/in/fabien-bismuth-a886502', confiance:'Elevee', conn:['leleu'] },
+  { id:'c32', name:'Fabien CABEZON', org:'FABIEN CABEZON - HGP', cabCount:1, linkedin:'https://fr.linkedin.com/in/fabien-cabezon-96a6a613', confiance:'Moyenne', conn:['leleu'] },
+  { id:'c33', name:'Maxime CAMUS', org:'GRISBEE GESTION PRIVEE (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/maxime-camus-58a7541/', confiance:'Elevee', conn:['leleu'] },
+  { id:'c34', name:'Maelle CARAVACA', org:'EN PRIVE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ma%C3%ABlle-caravaca-a5164028', confiance:'Moyenne', conn:['sahira'] },
+  { id:'c35', name:'Stéphane CARLUCCI', org:'KEVANO PATRIMOINE (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/stephane-carlucci-7a683015', confiance:'Elevee', conn:['leleu'] },
+  { id:'c36', name:'Philippe CAZADIEU', org:'PARIS PRIVATE FINANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/philippe-cazadieu-00626515', confiance:'Elevee', conn:['leleu'] },
+  { id:'c37', name:'Marion CHAPEL-MASSOT', org:'DECARION OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/marion-chapel-massot', confiance:'Elevee', conn:['leleu'] },
+  { id:'c38', name:'Emilie CHARBONNEL', org:'ALYTIS GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/emilie-charbonnel-42a822a', confiance:'Elevee', conn:['leleu'] },
+  { id:'c39', name:'Benjamin COHEN', org:'RIVIERA WEALTH MANAGEMENT', cabCount:1, linkedin:'https://www.linkedin.com/in/benjamin-cohen-78091225/', confiance:'Elevee', conn:['leleu'] },
+  { id:'c40', name:'Nicolas COMMEROT', org:'ALTITUDE INVESTMENTS SOLUTIONS', cabCount:1, linkedin:'https://fr.linkedin.com/in/nicolas-commerot', confiance:'Elevee', conn:['pierre'] },
+  { id:'c41', name:'Yves CONAN', org:'IRBIS SOLUTIONS', cabCount:1, linkedin:'https://fr.linkedin.com/in/yves-conan-8476591', confiance:'Elevee', conn:['pierre'] },
+  { id:'c42', name:'Charles COULOMBAN', org:'B-INVESTISSEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/charles-coulomban-aa7441a', confiance:'Elevee', conn:['leleu'] },
+  { id:'c43', name:'Thierry CREUX', org:'B-INVESTISSEMENT (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/thierry-creux-2918971a/', confiance:'Elevee', conn:['leleu'] },
+  { id:'c44', name:'Anthony CROS', org:'CROS INVESTING', cabCount:1, linkedin:'https://www.linkedin.com/in/anthonycros/', confiance:'Moyenne', conn:['leleu'] },
+  { id:'c45', name:'Anne-Aurore CUZOL', org:'INNOLIANCE CONSEIL & PATRIMOINE (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/aacuzol/', confiance:'Elevee', conn:['leleu'] },
+  { id:'c46', name:'Alexandre DE SAGAZAN', org:'ARGUIN CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/alexandre-de-sagazan-2bb9012', confiance:'Moyenne', conn:['pierre'] },
+  { id:'c47', name:'Rachel DE VALICOURT', org:'LINARD CHARBONNEL (+3 cabinets)', cabCount:4, linkedin:'https://fr.linkedin.com/in/rachel-de-valicourt', confiance:'Elevee', conn:['sahira'] },
+  { id:'c48', name:'GAUTIER DELABROUSSE-MAYOUX', org:'IROKO', cabCount:1, linkedin:'https://fr.linkedin.com/in/gautier-delabrousse-mayoux-73986717', confiance:'Elevee', conn:['leleu'] },
+  { id:'c49', name:'Gregory DELMAS', org:'EURO PATRIMOINE INVESTISSEMENT', cabCount:1, linkedin:'https://www.linkedin.com/in/gregory-delmas-76242815/', confiance:'Elevee', conn:['leleu'] },
+  { id:'c50', name:'Antoine DELON', org:'IRBIS SOLUTIONS (+2 cabinets)', cabCount:3, linkedin:'https://fr.linkedin.com/in/antoine-delon-5aa5838', confiance:'Elevee', conn:['leleu'] },
+  { id:'c51', name:'Nicolas DEMYTTENAERE', org:'KINO GESTION PRIVÉE (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/nicolas-demyttenaere-3570866', confiance:'Elevee', conn:['leleu'] },
+  { id:'c52', name:'Caroline DERYCKE', org:'SERENA CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/caroline-derycke-serena-conseil/', confiance:'Elevee', conn:['sahira'] },
+  { id:'c53', name:'Tathy DIALLO', org:'PCA FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/tathy-diallo-b31733143', confiance:'Elevee', conn:['sahira'] },
+  { id:'c54', name:'Dominique DIMIER', org:'CAE CONTACT ASSISTANCE ENTREPRISE (+2 cabinets)', cabCount:3, linkedin:'https://www.linkedin.com/in/dominique-dimier/', confiance:'Elevee', conn:['leleu'] },
+  { id:'c55', name:'Virginie DUFFOUR', org:'BEELONG FAMILY OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/virginie-duffour-2ab1a32', confiance:'Elevee', conn:['leleu'] },
+  { id:'c56', name:'Julien DUPONT', org:'DUPONT CONSEIL GESTION ET ASSOCIES SARL', cabCount:1, linkedin:'https://fr.linkedin.com/in/julien-dupont-032305107', confiance:'Moyenne', conn:['leleu'] },
+  { id:'c57', name:'Benjamin DURAND', org:'B DURAND CAPITAL PARTNERS', cabCount:1, linkedin:'https://fr.linkedin.com/in/benjamin-durand', confiance:'Moyenne', conn:['leleu'] },
+  { id:'c58', name:'Maxime DURAND', org:'AGAPE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/maxime-durand-agape-patrimoine', confiance:'Elevee', conn:['leleu'] },
+  { id:'c59', name:'Julien DUSSAUSSAY', org:'REFERENCE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/julien-dussaussay-8852633', confiance:'Elevee', conn:['leleu'] },
+  { id:'c60', name:'John ELALOUF', org:'MONALIZA', cabCount:1, linkedin:'https://fr.linkedin.com/in/john-elalouf-6124a84', confiance:'Elevee', conn:['pierre'] },
+  { id:'c61', name:'Romain ELMOSNINO', org:'VESTED GESTION PRIVEE (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/romain-elmosnino', confiance:'Elevee', conn:['leleu'] },
+  { id:'c62', name:'GUILLAUME EYSSETTE', org:'GEFINEO', cabCount:1, linkedin:'https://fr.linkedin.com/in/guillaume-eyssette-0b1314', confiance:'Elevee', conn:['leleu'] },
+  { id:'c63', name:'Guillaume FALLER', org:'GF PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/guillaume-faller-8905552', confiance:'Elevee', conn:['pierre'] },
+  { id:'c64', name:'Ludovic FARNAULT', org:'MEYON ULTIM PARIS', cabCount:1, linkedin:'https://fr.linkedin.com/in/ludovic-farnault-44846613', confiance:'Elevee', conn:['leleu'] },
+  { id:'c65', name:'David FERRIER', org:'FERRIER CONSEILS & PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/davidferrier/', confiance:'Moyenne', conn:['leleu'] },
+  { id:'c66', name:'Charlotte FLINOIS', org:'LBI PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/charlotte-flinois-759b822/en', confiance:'Elevee', conn:['pierre'] },
+  { id:'c67', name:'Benjamin FLOTTES DE POUZOLS', org:'WENIMMO', cabCount:1, linkedin:'https://fr.linkedin.com/in/benjamin-flottes-de-pouzols-4aa31417', confiance:'Elevee', conn:['leleu'] },
+  { id:'c68', name:'Loïc GACH', org:'OUTMATCH INVEST', cabCount:1, linkedin:'https://www.linkedin.com/in/lo%C3%AFc-gach-76662a23/', confiance:'Elevee', conn:['olric'] },
+  { id:'c69', name:'Jean-Christian GEY', org:'MONSIEURGEY', cabCount:1, linkedin:'https://fr.linkedin.com/in/jean-christian-gey-a6760a129', confiance:'Elevee', conn:['sahira'] },
+  { id:'c70', name:'Brice GIMENO', org:'QUADRATIS', cabCount:1, linkedin:'https://fr.linkedin.com/in/brice-gimeno', confiance:'Elevee', conn:['sahira'] },
+  { id:'c71', name:'Joël GIROD', org:'BERGER ET ASSOCIES', cabCount:1, linkedin:'https://fr.linkedin.com/in/jo%C3%ABl-girod-53644a20', confiance:'Elevee', conn:['sahira'] },
+  { id:'c72', name:'Hubert GIRONDEL', org:'INITIAL FAMILY OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/hubert-girondel-63272155', confiance:'Elevee', conn:['olric'] },
+  { id:'c73', name:'Jérôme GLODAS', org:'ZALPHA', cabCount:1, linkedin:'https://fr.linkedin.com/in/jerome-glodas-9a83212a', confiance:'Elevee', conn:['damien'] },
+  { id:'c74', name:'Amaury GOSSÉ', org:'LA MUETTE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/amaury-goss%C3%A9-56753b1', confiance:'Elevee', conn:['pierre'] },
+  { id:'c75', name:'Philippe GOURDELIER', org:'NIPHICAP', cabCount:1, linkedin:'https://fr.linkedin.com/in/philippe-gourdelier-9a6a9a5', confiance:'Moyenne', conn:['leleu'] },
+  { id:'c76', name:'Olivier GRENON-ANDRIEU', org:'EQUANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/grenon-andrieu-olivier', confiance:'Elevee', conn:['leleu'] },
+  { id:'c77', name:'Caroline GRINDA-KALBACHER', org:'KYOSEIL AM', cabCount:1, linkedin:'https://fr.linkedin.com/in/caroline-grinda-kalbacher-0a991519', confiance:'Elevee', conn:['leleu'] },
+  { id:'c78', name:'Samuel HADDAD', org:'OPTIMIUM FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/samuel-haddad-5843653/', confiance:'Moyenne', conn:['leleu'] },
+  { id:'c79', name:'Jean-Baptiste HOLTZ', org:'WEALTH CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/jbholtz/', confiance:'Elevee', conn:['leleu'] },
+  { id:'c80', name:'Patrick JANEL', org:'ALETIA', cabCount:1, linkedin:'https://fr.linkedin.com/in/patrick-janel-1450973', confiance:'Elevee', conn:['leleu'] },
+  { id:'c81', name:'Christophe KAH', org:'EURO PATRIMOINE INVESTISSEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/christophe-kah-b035391', confiance:'Elevee', conn:['leleu'] },
+  { id:'c82', name:'Mounir LAGGOUNE', org:'FINARY', cabCount:1, linkedin:'https://fr.linkedin.com/in/mounirlaggoune', confiance:'Elevee', conn:['olric'] },
+  { id:'c83', name:'Yann LE HER', org:'23IS', cabCount:1, linkedin:'https://fr.linkedin.com/in/yann-le-her-21569a13', confiance:'Elevee', conn:['olric'] },
+  { id:'c84', name:'Sylvain LEFEVRE', org:'SYLVAIN LEFEVRE FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/lef%C3%A8vre-sylvain-a363602a2/', confiance:'Moyenne', conn:['damien'] },
+  { id:'c85', name:'Sabine LENAERTS', org:'VERTIGO BY ID', cabCount:1, linkedin:'https://fr.linkedin.com/in/sabinelenaerts', confiance:'Elevee', conn:['leleu'] },
+  { id:'c86', name:'François-Xavier LENIER', org:'FACTEUR 7', cabCount:1, linkedin:'https://www.linkedin.com/in/fxl%C3%A9nier/', confiance:'Moyenne', conn:['leleu'] },
+  { id:'c87', name:'Adrien LHERMITTE', org:'LINAVEST', cabCount:1, linkedin:'https://fr.linkedin.com/in/adrien-lhermitte', confiance:'Elevee', conn:['leleu'] },
+  { id:'c88', name:'Caroline LIM', org:'SERENDIP PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/carolinelim-serendippatrimoine', confiance:'Elevee', conn:['leleu'] },
+  { id:'c89', name:'Simon LOLMEDE', org:'ORIGAMI 31', cabCount:1, linkedin:'https://fr.linkedin.com/in/simonlolmede', confiance:'Elevee', conn:['sahira'] },
+  { id:'c90', name:'Aurélia LOVADINA', org:'CLEOS GESTION PRIVÉE', cabCount:1, linkedin:'https://fr.linkedin.com/in/aur%C3%A9lia-lovadina-cfa-9a964124', confiance:'Elevee', conn:['olric'] },
+  { id:'c91', name:'Baptiste MAES', org:'OFILAE LILLE', cabCount:1, linkedin:'https://fr.linkedin.com/in/baptiste-maes-93537314', confiance:'Elevee', conn:['leleu'] },
+  { id:'c92', name:'Ninon MANARANCHE-MICHEL', org:'AMANTHEE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ninonmanaranchemichel', confiance:'Elevee', conn:['leleu'] },
+  { id:'c93', name:'Matthieu MANCUSO', org:'EGEO CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/matthieu-mancuso', confiance:'Elevee', conn:['olric'] },
+  { id:'c94', name:'Pascal MARTIN', org:'GENERATION ET PATRIMOINE (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/pascal-martin-b0b59a17/', confiance:'Elevee', conn:['leleu'] },
+  { id:'c95', name:'Henry MASDEVALL', org:'VALOREY FINANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/henry-masdevall-15b1bb19', confiance:'Elevee', conn:['leleu'] },
+  { id:'c96', name:'Philippe MATTER', org:'ALTERNATIVE PATRIMONIALE', cabCount:1, linkedin:'https://www.linkedin.com/in/philippematter/', confiance:'Elevee', conn:['damien'] },
+  { id:'c97', name:'Olivier MAURO', org:'ACTEA PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/olivier-mauro-318b781', confiance:'Moyenne', conn:['pierre'] },
+  { id:'c98', name:'François MAZET', org:'MV PARTENAIRES', cabCount:1, linkedin:'https://www.linkedin.com/in/fran%C3%A7ois-mazet-33549b16/', confiance:'Elevee', conn:['leleu'] },
+  { id:'c99', name:'Régis MEYER', org:'FAMILY GESTION PRIVEE (+2 cabinets)', cabCount:3, linkedin:'https://fr.linkedin.com/in/regis-meyer', confiance:'Elevee', conn:['leleu'] },
+  { id:'c100', name:'Ethel MOLINA', org:'MA GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ethel-molina-86778525', confiance:'Elevee', conn:['sahira'] },
+  { id:'c101', name:'Laetitia NGOMA', org:'DIAMOND COMPAGNIE', cabCount:1, linkedin:'https://fr.linkedin.com/in/laetitia-ngoma', confiance:'Elevee', conn:['olric'] },
+  { id:'c102', name:'Valentin PAPET', org:'BEAUVOISINE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/valentin-papet', confiance:'Elevee', conn:['olric'] },
+  { id:'c103', name:'Matthieu PAQUIER', org:'ORKESTRA PARTNERS', cabCount:1, linkedin:'https://fr.linkedin.com/in/matthieu-paquier-9b45a43', confiance:'Elevee', conn:['leleu'] },
+  { id:'c104', name:'Vincent PAQUIER', org:'GIRARD ASSURANCE CONSEIL (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/vincent-paquier-7b7931', confiance:'Elevee', conn:['leleu'] },
+  { id:'c105', name:'Aline PEREZ', org:'PASSION FINANCES', cabCount:1, linkedin:'https://www.linkedin.com/in/aperezcgp/', confiance:'Elevee', conn:['damien'] },
+  { id:'c106', name:'Séverine PIOT-DEVAL', org:'TANIT', cabCount:1, linkedin:'https://fr.linkedin.com/in/severine-piot-deval', confiance:'Moyenne', conn:['pierre'] },
+  { id:'c107', name:'Joël PÉRIÉ', org:'PERPETUO CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/jo%C3%ABl-p%C3%A9ri%C3%A9-5a2a6616', confiance:'Elevee', conn:['leleu'] },
+  { id:'c108', name:'Romain RENAULT', org:'RENAULT GESTION PRIVEE', cabCount:1, linkedin:'https://www.linkedin.com/in/romainrenault/', confiance:'Moyenne', conn:['damien'] },
+  { id:'c109', name:'Cyrille RESTIER', org:'STRATEGINVEST', cabCount:1, linkedin:'https://fr.linkedin.com/in/cyrille-restier-6100aa23', confiance:'Moyenne', conn:['damien'] },
+  { id:'c110', name:'Hugues RIANT', org:'U2 FAMILY OFFICE', cabCount:1, linkedin:'https://www.linkedin.com/in/hugues-riant-45874617/', confiance:'Moyenne', conn:['olric'] },
+  { id:'c111', name:'Yoann RICHARD', org:'EURASSUR (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/yoannrichard/', confiance:'Elevee', conn:['leleu'] },
+  { id:'c112', name:'Olivier RIEU', org:'KIMPA', cabCount:1, linkedin:'https://www.linkedin.com/in/olivierrieu/', confiance:'Elevee', conn:['pierre'] },
+  { id:'c113', name:'Eric ROBBE', org:'LAFFITTE GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/eric-robbe-b311b86', confiance:'Elevee', conn:['leleu'] },
+  { id:'c114', name:'Jean-Frédéric ROUXEL', org:'ASCALON FINANCES', cabCount:1, linkedin:'https://fr.linkedin.com/in/jean-fr%C3%A9d%C3%A9ric-rouxel-gestion-patrimoine-expert-fiscalit%C3%A9', confiance:'Elevee', conn:['leleu'] },
+  { id:'c115', name:'Fabien RYCROFT', org:'VITALEPARGNE (+4 cabinets)', cabCount:5, linkedin:'https://fr.linkedin.com/in/fabien-rycroft', confiance:'Elevee', conn:['leleu'] },
+  { id:'c116', name:'Mathieu SANLAVILLE', org:'NORMA CONSEILS', cabCount:1, linkedin:'https://fr.linkedin.com/in/mathieu-sanlaville-3556122a', confiance:'Elevee', conn:['sahira'] },
+  { id:'c117', name:'Julien SEBA', org:'MILLENIANCE (AVENIR EPARGNE) (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/julien-seba', confiance:'Elevee', conn:['olric'] },
+  { id:'c118', name:'Guillaume SEREAUD', org:'ALIQUIS GRAND EST', cabCount:1, linkedin:'https://fr.linkedin.com/in/guillaume-sereaud-16805522', confiance:'Elevee', conn:['olric'] },
+  { id:'c119', name:'Michael SFEZ', org:'KERMONY CAPITAL (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/msfez/', confiance:'Elevee', conn:['leleu'] },
+  { id:'c120', name:'François-Xavier SOEUR', org:'TERRAE PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/soeur-33fx/', confiance:'Elevee', conn:['olric'] },
+  { id:'c121', name:'Nicolas SOST', org:'NIPHICAP', cabCount:1, linkedin:'https://www.linkedin.com/in/nicolas-sost-915bab/', confiance:'Moyenne', conn:['leleu'] },
+  { id:'c122', name:'Nicolas STOCLET', org:'OPALINE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/nicolasstoclet', confiance:'Elevee', conn:['leleu'] },
+  { id:'c123', name:'Nadim TAKCHI', org:'INNOVATIVE FINANCE - OPENSTONE', cabCount:1, linkedin:'https://www.linkedin.com/in/nadim-takchi-44830430/', confiance:'Elevee', conn:['olric'] },
+  { id:'c124', name:'Stéphane VAN HUFFEL', org:'SVH CONSEILS', cabCount:1, linkedin:'https://fr.linkedin.com/in/stephane-van-huffel-206b171b', confiance:'Moyenne', conn:['sahira'] },
+  { id:'c125', name:'Olivier VASSEUR', org:'LDV PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/oliviervasseur1ficalitegestiondepatrimoinebanquebarclayscitibankmilleisplacementscryptomoneynft/', confiance:'Elevee', conn:['leleu'] },
+  { id:'c126', name:'Fred VIANAS', org:'UFIFRANCE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/fredvianas', confiance:'Elevee', conn:['pierre'] },
+  { id:'c127', name:'Bernard WEILL', org:'CENTRE DE CONSEIL EN ASSURANCES ET DE SERVICES AUX ENTREPRISES CECASE (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/bernard-weill-0a865b12', confiance:'Elevee', conn:['leleu'] },
+  { id:'c128', name:'Aurélie YIFLACH', org:'SERENITYS PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/aurelie-yiflach-tenenbaum-4b756a16', confiance:'Elevee', conn:['leleu'] },
+  { id:'c129', name:'Bruno ZARAYA', org:'TREE FAMILY', cabCount:1, linkedin:'https://fr.linkedin.com/in/bruno-zaraya-511b4b2b', confiance:'Elevee', conn:['damien'] },
 ];
 
 // Build nodes & edges
@@ -184,74 +366,60 @@ const nodes = [];
 const edges = [];
 const idMap = {};
 
-ROCKFI.forEach((r,i) => {
-  const n = { ...r, x:0, y:0, vx:0, vy:0, radius:22, mass:8 };
+const ANCHOR_FILL = { rockfi: '#7c3aed', external: '#0d9488' };
+const ANCHOR_FILL_HOV = { rockfi: '#a78bfa', external: '#14b8a6' };
+const ANCHOR_STROKE = { rockfi: '#a78bfa', external: '#5eead4' };
+
+ANCHORS.forEach(r => {
   idMap[r.id] = nodes.length;
-  nodes.push(n);
+  nodes.push({ ...r, x:0, y:0, vx:0, vy:0, radius:24, mass:10 });
 });
 
-const segColor = {
-  'Associé unique': '#34d399',
-  'New Gen CGP': '#fb923c',
-  'Jeune en croissance CNCGP - Portable': '#60a5fa',
-};
+const confColor = { 'Elevee': '#34d399', 'Moyenne': '#fb923c' };
 
 CGPS.forEach(c => {
-  const n = {
-    ...c, type:'cgp', x:0, y:0, vx:0, vy:0,
-    radius: c.conn.length > 1 ? 7 : 5,
-    mass: c.conn.length > 1 ? 2 : 1,
-    color: segColor[c.segment] || '#34d399',
-    multi: c.conn.length > 1,
-  };
+  const tier = c.conn.length;
+  let color, radius, mass;
+  if (tier >= 3) { color = '#f87171'; radius = 12; mass = 4; }
+  else if (tier === 2) { color = '#fbbf24'; radius = 10; mass = 3; }
+  else { color = confColor[c.confiance] || '#34d399'; radius = 6; mass = 1; }
   idMap[c.id] = nodes.length;
-  nodes.push(n);
-  c.conn.forEach(rid => {
-    edges.push({ source: idMap[c.id] || nodes.length-1, target: idMap[rid], multi: c.conn.length > 1 });
-  });
+  nodes.push({ ...c, type:'cgp', x:0, y:0, vx:0, vy:0, radius, mass, color, multi: tier > 1, tier });
 });
 
-// Fix: re-assign source indices properly
-let ei = 0;
 CGPS.forEach(c => {
   const si = idMap[c.id];
   c.conn.forEach(rid => {
-    edges[ei].source = si;
-    edges[ei].target = idMap[rid];
-    ei++;
+    edges.push({ source: si, target: idMap[rid], multi: c.conn.length > 1 });
   });
 });
 
-// Initial positions — Rockfi in center area, CGPs scattered
 const W = window.innerWidth, H = window.innerHeight;
 const cx = W/2, cy = H/2;
+const ANCHOR_RADIUS = Math.min(W, H) * 0.30;
 
-// Place Rockfi nodes in a diamond
-const rPositions = [
-  { x: cx, y: cy - 80 },     // Leleu top
-  { x: cx + 100, y: cy + 20 }, // Olric right
-  { x: cx - 100, y: cy + 20 }, // Sahirah left
-  { x: cx, y: cy + 100 },    // Marie bottom
-];
-ROCKFI.forEach((r, i) => {
+ANCHORS.forEach(r => {
   const ni = idMap[r.id];
-  nodes[ni].x = rPositions[i].x;
-  nodes[ni].y = rPositions[i].y;
-  nodes[ni].fx = null;
-  nodes[ni].fy = null;
+  nodes[ni].x = cx + Math.cos(r.angle) * ANCHOR_RADIUS;
+  nodes[ni].y = cy + Math.sin(r.angle) * ANCHOR_RADIUS;
 });
 
-// Scatter CGPs around their connected Rockfi person
 CGPS.forEach(c => {
   const ni = idMap[c.id];
-  const primaryRockfi = idMap[c.conn[0]];
-  const angle = Math.random() * Math.PI * 2;
-  const dist = 120 + Math.random() * 200;
-  nodes[ni].x = nodes[primaryRockfi].x + Math.cos(angle) * dist;
-  nodes[ni].y = nodes[primaryRockfi].y + Math.sin(angle) * dist;
+  if (c.conn.length > 1) {
+    let sx = 0, sy = 0;
+    c.conn.forEach(rid => { sx += nodes[idMap[rid]].x; sy += nodes[idMap[rid]].y; });
+    nodes[ni].x = sx / c.conn.length + (Math.random()-0.5)*40;
+    nodes[ni].y = sy / c.conn.length + (Math.random()-0.5)*40;
+  } else {
+    const anchor = idMap[c.conn[0]];
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 100 + Math.random() * 200;
+    nodes[ni].x = nodes[anchor].x + Math.cos(angle) * dist;
+    nodes[ni].y = nodes[anchor].y + Math.sin(angle) * dist;
+  }
 });
 
-// Physics simulation
 let activeFilter = 'all';
 let alpha = 1;
 let dragging = null;
@@ -260,26 +428,23 @@ let panX = 0, panY = 0, zoom = 1;
 let panStart = null;
 
 function isVisible(node) {
-  if (node.type === 'rockfi') return true;
+  if (node.type === 'anchor') return true;
   if (activeFilter === 'all') return true;
-  const rockfiId = ROCKFI.find(r => r.name === activeFilter)?.id;
-  if (!rockfiId) return true;
-  return node.conn && node.conn.includes(rockfiId);
+  if (activeFilter === 'multi') return node.multi;
+  return node.conn && node.conn.includes(activeFilter);
 }
 
 function simulate() {
   const dt = 0.3;
-  const repulsion = 800;
+  const repulsion = 1200;
   const attraction = 0.008;
-  const restLength = 160;
+  const restLength = 180;
   const damping = 0.88;
   const centerPull = 0.0003;
 
-  // Only simulate visible nodes
   const visibleSet = new Set();
   nodes.forEach((n, i) => { if (isVisible(n)) visibleSet.add(i); });
 
-  // Repulsion between all visible nodes
   const visArr = [...visibleSet];
   for (let a = 0; a < visArr.length; a++) {
     for (let b = a+1; b < visArr.length; b++) {
@@ -295,7 +460,6 @@ function simulate() {
     }
   }
 
-  // Attraction along edges
   edges.forEach(e => {
     if (!visibleSet.has(e.source) || !visibleSet.has(e.target)) return;
     const na = nodes[e.source], nb = nodes[e.target];
@@ -307,14 +471,20 @@ function simulate() {
     nb.vx -= fx; nb.vy -= fy;
   });
 
-  // Center pull
   nodes.forEach((n,i) => {
     if (!visibleSet.has(i)) return;
     n.vx += (cx - n.x) * centerPull;
     n.vy += (cy - n.y) * centerPull;
   });
 
-  // Integrate
+  ANCHORS.forEach(r => {
+    const n = nodes[idMap[r.id]];
+    const tx = cx + Math.cos(r.angle) * ANCHOR_RADIUS;
+    const ty = cy + Math.sin(r.angle) * ANCHOR_RADIUS;
+    n.vx += (tx - n.x) * 0.02;
+    n.vy += (ty - n.y) * 0.02;
+  });
+
   nodes.forEach((n,i) => {
     if (!visibleSet.has(i) || n === dragging) return;
     n.vx *= damping * alpha;
@@ -327,7 +497,6 @@ function simulate() {
   if (alpha < 0.01) alpha = 0.01;
 }
 
-// Rendering
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
 const tooltip = document.getElementById('tooltip');
@@ -343,9 +512,6 @@ function resize() {
 resize();
 window.addEventListener('resize', resize);
 
-function toScreen(x, y) {
-  return [(x + panX) * zoom + W/2*(1-zoom), (y + panY) * zoom + H/2*(1-zoom)];
-}
 function toWorld(sx, sy) {
   return [(sx - W/2*(1-zoom))/zoom - panX, (sy - H/2*(1-zoom))/zoom - panY];
 }
@@ -359,15 +525,20 @@ function draw() {
   const visibleSet = new Set();
   nodes.forEach((n, i) => { if (isVisible(n)) visibleSet.add(i); });
 
-  // Glow behind Rockfi nodes
+  // Glow behind anchors
   nodes.forEach((n, i) => {
-    if (n.type !== 'rockfi' || !visibleSet.has(i)) return;
-    const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 80);
-    grad.addColorStop(0, 'rgba(167,139,250,0.08)');
-    grad.addColorStop(1, 'rgba(167,139,250,0)');
+    if (n.type !== 'anchor' || !visibleSet.has(i)) return;
+    const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 110);
+    if (n.external) {
+      grad.addColorStop(0, 'rgba(20,184,166,0.12)');
+      grad.addColorStop(1, 'rgba(20,184,166,0)');
+    } else {
+      grad.addColorStop(0, 'rgba(167,139,250,0.10)');
+      grad.addColorStop(1, 'rgba(167,139,250,0)');
+    }
     ctx.fillStyle = grad;
     ctx.beginPath();
-    ctx.arc(n.x, n.y, 80, 0, Math.PI*2);
+    ctx.arc(n.x, n.y, 110, 0, Math.PI*2);
     ctx.fill();
   });
 
@@ -381,17 +552,18 @@ function draw() {
     ctx.moveTo(na.x, na.y);
     ctx.lineTo(nb.x, nb.y);
 
-    if (e.multi) {
-      ctx.strokeStyle = isHovered ? 'rgba(251,191,36,0.7)' : 'rgba(251,191,36,0.3)';
-      ctx.lineWidth = isHovered ? 2 : 1.2;
+    const cgpNode = na.type === 'cgp' ? na : nb;
+    if (cgpNode.tier >= 3) {
+      ctx.strokeStyle = isHovered ? 'rgba(248,113,113,0.95)' : 'rgba(248,113,113,0.55)';
+      ctx.lineWidth = isHovered ? 2.8 : 1.8;
+    } else if (cgpNode.tier === 2) {
+      ctx.strokeStyle = isHovered ? 'rgba(251,191,36,0.85)' : 'rgba(251,191,36,0.45)';
+      ctx.lineWidth = isHovered ? 2.5 : 1.5;
     } else {
-      const col = na.type === 'cgp' ? na.color : nb.color;
-      const a = isHovered ? 0.6 : 0.12;
-      ctx.strokeStyle = col.replace(')', `,${a})`).replace('rgb', 'rgba');
-      if (col.startsWith('#')) {
-        const r = parseInt(col.slice(1,3),16), g = parseInt(col.slice(3,5),16), b = parseInt(col.slice(5,7),16);
-        ctx.strokeStyle = `rgba(${r},${g},${b},${a})`;
-      }
+      const col = cgpNode.color;
+      const a = isHovered ? 0.6 : 0.13;
+      const r = parseInt(col.slice(1,3),16), g = parseInt(col.slice(3,5),16), b = parseInt(col.slice(5,7),16);
+      ctx.strokeStyle = `rgba(${r},${g},${b},${a})`;
       ctx.lineWidth = isHovered ? 1.5 : 0.6;
     }
     ctx.stroke();
@@ -402,39 +574,41 @@ function draw() {
     if (!visibleSet.has(i)) return;
     const isHov = i === hovering;
 
-    if (n.type === 'rockfi') {
-      // Rockfi node
+    if (n.type === 'anchor') {
+      const kind = n.external ? 'external' : 'rockfi';
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.radius + (isHov ? 3 : 0), 0, Math.PI*2);
-      ctx.fillStyle = isHov ? '#a78bfa' : '#7c3aed';
+      ctx.fillStyle = isHov ? ANCHOR_FILL_HOV[kind] : ANCHOR_FILL[kind];
       ctx.fill();
-      ctx.strokeStyle = '#a78bfa';
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = ANCHOR_STROKE[kind];
+      ctx.lineWidth = 1.8;
       ctx.stroke();
 
-      ctx.font = '500 12px "IBM Plex Sans"';
-      ctx.fillStyle = '#e8e8f0';
+      ctx.font = '600 12px "IBM Plex Sans"';
+      ctx.fillStyle = '#ffffff';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(n.short, n.x, n.y);
     } else {
-      // CGP node
       const r = n.radius + (isHov ? 2 : 0);
       ctx.beginPath();
       ctx.arc(n.x, n.y, r, 0, Math.PI*2);
-      ctx.fillStyle = isHov ? n.color : n.color + '99';
+      ctx.fillStyle = isHov ? n.color : n.color + 'cc';
       ctx.fill();
 
-      if (n.multi) {
-        ctx.strokeStyle = '#fbbf24';
-        ctx.lineWidth = 1.5;
+      if (n.tier >= 3) {
+        ctx.strokeStyle = '#fecaca';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      } else if (n.tier === 2) {
+        ctx.strokeStyle = '#fde68a';
+        ctx.lineWidth = 1.8;
         ctx.stroke();
       }
 
-      // Label on hover
-      if (isHov) {
-        ctx.font = '500 10px "IBM Plex Sans"';
-        ctx.fillStyle = '#e8e8f0';
+      if (isHov || n.multi) {
+        ctx.font = (n.tier >= 3 ? '600 12px' : (n.multi ? '600 11px' : '500 10px')) + ' "IBM Plex Sans"';
+        ctx.fillStyle = n.tier >= 3 ? '#fecaca' : (n.multi ? '#fde68a' : '#e8e8f0');
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
         ctx.fillText(n.name, n.x, n.y - r - 4);
@@ -445,14 +619,9 @@ function draw() {
   ctx.restore();
 }
 
-function frame() {
-  simulate();
-  draw();
-  requestAnimationFrame(frame);
-}
+function frame() { simulate(); draw(); requestAnimationFrame(frame); }
 frame();
 
-// Interaction
 function getNodeAt(mx, my) {
   const [wx, wy] = toWorld(mx, my);
   let best = null, bestD = Infinity;
@@ -466,42 +635,38 @@ function getNodeAt(mx, my) {
   return best;
 }
 
+const ANCHOR_LABEL = { damien:'Damien', pierre:'Pierre', olric:'Olric', sahira:'Sahira', leleu:'Leleu' };
+
 canvas.addEventListener('mousemove', e => {
   const mx = e.clientX, my = e.clientY;
-
   if (dragging !== null) {
     const [wx, wy] = toWorld(mx, my);
-    nodes[dragging].x = wx;
-    nodes[dragging].y = wy;
-    nodes[dragging].vx = 0;
-    nodes[dragging].vy = 0;
-    alpha = 0.3;
-    return;
+    nodes[dragging].x = wx; nodes[dragging].y = wy;
+    nodes[dragging].vx = 0; nodes[dragging].vy = 0;
+    alpha = 0.3; return;
   }
-
   if (panStart) {
     panX += (mx - panStart.x) / zoom;
     panY += (my - panStart.y) / zoom;
-    panStart = { x: mx, y: my };
-    return;
+    panStart = { x: mx, y: my }; return;
   }
-
   const idx = getNodeAt(mx, my);
   hovering = idx;
   canvas.style.cursor = idx !== null ? 'pointer' : 'grab';
-
   if (idx !== null) {
     const n = nodes[idx];
     let html = '<div class="tt-name">' + (n.name || n.short) + '</div>';
     if (n.type === 'cgp') {
       html += '<div class="tt-org">' + n.org + '</div>';
-      html += '<div class="tt-segment">' + n.segment + '</div>';
-      const connNames = n.conn.map(rid => ROCKFI.find(r=>r.id===rid)?.short).join(', ');
-      html += '<div class="tt-conn">→ ' + connNames + '</div>';
-      if (n.multi) html += '<div style="color:#fbbf24;font-size:10px;margin-top:2px">★ Multi-connected</div>';
+      html += '<div class="tt-segment">Confiance LinkedIn : ' + n.confiance + '</div>';
+      const connLabel = n.conn.map(id => ANCHOR_LABEL[id]).join(' + ');
+      html += '<div class="tt-conn">→ ' + connLabel + '</div>';
+      if (n.tier >= 3) html += '<div style="color:#f87171;font-size:10px;margin-top:4px">★★★ Connecté à ' + n.tier + ' personnes</div>';
+      else if (n.tier === 2) html += '<div style="color:#fbbf24;font-size:10px;margin-top:4px">★★ Connecté à 2 personnes</div>';
     } else {
       const count = CGPS.filter(c => c.conn.includes(n.id)).length;
-      html += '<div class="tt-org">' + count + ' CGPs connectés</div>';
+      html += '<div class="tt-org">' + count + ' CGP CNCGP croisés' + (n.external ? ' • externe à Rockfi' : '') + '</div>';
+      html += '<div class="tt-segment">Total connexions LinkedIn : ' + n.totalConn + '</div>';
     }
     tooltip.innerHTML = html;
     tooltip.style.display = 'block';
@@ -514,61 +679,79 @@ canvas.addEventListener('mousemove', e => {
 
 canvas.addEventListener('mousedown', e => {
   const idx = getNodeAt(e.clientX, e.clientY);
-  if (idx !== null) {
-    dragging = idx;
-    alpha = 0.5;
-    canvas.style.cursor = 'grabbing';
-  } else {
-    panStart = { x: e.clientX, y: e.clientY };
-    canvas.style.cursor = 'grabbing';
-  }
+  if (idx !== null) { dragging = idx; alpha = 0.5; }
+  else { panStart = { x: e.clientX, y: e.clientY }; }
 });
-
-canvas.addEventListener('mouseup', () => {
-  dragging = null;
-  panStart = null;
-});
+canvas.addEventListener('mouseup', () => { dragging = null; panStart = null; });
+canvas.addEventListener('mouseleave', () => { dragging = null; panStart = null; tooltip.style.display = 'none'; });
 
 canvas.addEventListener('wheel', e => {
   e.preventDefault();
-  const factor = e.deltaY > 0 ? 0.92 : 1.08;
-  zoom = Math.max(0.3, Math.min(4, zoom * factor));
+  const factor = e.deltaY < 0 ? 1.1 : 0.9;
+  zoom = Math.max(0.3, Math.min(3, zoom * factor));
 }, { passive: false });
 
-// Filter
-function setFilter(f) {
-  activeFilter = f;
-  alpha = 0.8;
-  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
-  event.target.closest('.fbtn').classList.add('active');
+canvas.addEventListener('click', e => {
+  const idx = getNodeAt(e.clientX, e.clientY);
+  if (idx !== null) openCard(nodes[idx]);
+});
+
+const cardEl = document.getElementById('card');
+const cardBody = document.getElementById('card-body');
+
+function escapeHtml(s) {
+  return String(s||'').replace(/[&<>"\']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-// Touch support
-canvas.addEventListener('touchstart', e => {
-  if (e.touches.length === 1) {
-    const t = e.touches[0];
-    const idx = getNodeAt(t.clientX, t.clientY);
-    if (idx !== null) dragging = idx;
-    else panStart = { x: t.clientX, y: t.clientY };
-  }
-}, { passive: true });
-canvas.addEventListener('touchmove', e => {
-  if (e.touches.length === 1) {
-    const t = e.touches[0];
-    if (dragging !== null) {
-      const [wx, wy] = toWorld(t.clientX, t.clientY);
-      nodes[dragging].x = wx; nodes[dragging].y = wy;
-      nodes[dragging].vx = 0; nodes[dragging].vy = 0;
-      alpha = 0.3;
-    } else if (panStart) {
-      panX += (t.clientX - panStart.x) / zoom;
-      panY += (t.clientY - panStart.y) / zoom;
-      panStart = { x: t.clientX, y: t.clientY };
+function openCard(n) {
+  cardEl.classList.toggle('external', !!(n.type === 'anchor' && n.external));
+  let html = '';
+  if (n.type === 'cgp') {
+    html += '<div class="card-name">' + escapeHtml(n.name) + '</div>';
+    if (n.org) html += '<div class="card-org">' + escapeHtml(n.org) + '</div>';
+    if (n.tier >= 4) html += '<div class="card-tier t4">★★★★ Connecté à ' + n.tier + ' personnes</div>';
+    else if (n.tier >= 3) html += '<div class="card-tier t3">★★★ Connecté à ' + n.tier + ' personnes</div>';
+    else if (n.tier === 2) html += '<div class="card-tier t2">★★ Connecté à 2 personnes</div>';
+    html += '<div class="card-row"><span class="card-label">Confiance LinkedIn</span><br>' + escapeHtml(n.confiance) + '</div>';
+    html += '<div class="card-row"><span class="card-label">Connecté à</span><div class="card-conn">';
+    n.conn.forEach(id => {
+      const ext = id === 'leleu' ? ' external' : '';
+      html += '<span class="card-chip' + ext + '">' + escapeHtml(ANCHOR_LABEL[id]) + '</span>';
+    });
+    html += '</div></div>';
+    if (n.linkedin) {
+      html += '<a class="card-link" href="' + escapeHtml(n.linkedin) + '" target="_blank" rel="noopener">↗ Ouvrir le profil LinkedIn</a>';
     }
+  } else {
+    html += '<div class="card-name">' + escapeHtml(n.name) + (n.external ? ' <span style="color:#5eead4;font-size:11px;font-weight:500">• externe</span>' : '') + '</div>';
+    const cgpList = CGPS.filter(c => c.conn.includes(n.id));
+    html += '<div class="card-org">' + cgpList.length + ' CGP CNCGP croisés sur ' + n.totalConn + ' contacts LinkedIn</div>';
+    const multi = cgpList.filter(c => c.conn.length > 1).length;
+    if (multi) html += '<div class="card-row"><span class="card-label">dont multi-connectés</span><br>' + multi + '</div>';
+    html += '<div class="card-row" style="margin-top:10px"><span class="card-label">Liste des CGP</span></div>';
+    html += '<div style="max-height:240px;overflow-y:auto;margin-top:6px;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px">';
+    cgpList.sort((a,b) => b.conn.length - a.conn.length || a.name.localeCompare(b.name)).forEach(c => {
+      const tierMark = c.conn.length >= 3 ? '<span style="color:#f87171">●</span> ' : c.conn.length === 2 ? '<span style="color:#fbbf24">●</span> ' : '';
+      html += '<div style="font-size:12px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)">';
+      html += tierMark + '<a href="' + escapeHtml(c.linkedin) + '" target="_blank" rel="noopener" style="color:#d4c8ff;text-decoration:none">' + escapeHtml(c.name) + '</a>';
+      html += ' <span style="color:#6060a0;font-size:10px">— ' + escapeHtml(c.org) + '</span>';
+      html += '</div>';
+    });
+    html += '</div>';
   }
-  e.preventDefault();
-}, { passive: false });
-canvas.addEventListener('touchend', () => { dragging = null; panStart = null; });
+  cardBody.innerHTML = html;
+  cardEl.style.display = 'block';
+}
+
+function closeCard() { cardEl.style.display = 'none'; }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCard(); });
+
+function setFilter(f, ev) {
+  activeFilter = f;
+  alpha = 1;
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+  ev.target.classList.add('active');
+}
 </script>
 </body>
 </html>
