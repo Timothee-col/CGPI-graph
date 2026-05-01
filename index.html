@@ -109,12 +109,81 @@
   .fbtn:hover { border-color: rgba(140,120,255,0.3); color: #c0c0d0; }
   .fbtn.active { border-color: rgba(140,120,255,0.5); color: #d4c8ff; background: rgba(100,80,200,0.12); }
   .fbtn .fbtn-count { float: right; color: #6060a0; margin-left: 12px; font-family: 'IBM Plex Mono', monospace; }
+
+  #card {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 320px;
+    background: rgba(18,18,24,0.96);
+    border: 1px solid rgba(140,120,255,0.25);
+    border-radius: 12px;
+    padding: 18px 20px;
+    backdrop-filter: blur(12px);
+    z-index: 80;
+    display: none;
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: #c8c8d4;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  #card .card-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #6060a0;
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  #card .card-close:hover { color: #d4c8ff; background: rgba(140,120,255,0.1); }
+  #card .card-name { font-weight: 600; color: #e8e8f0; font-size: 16px; margin-bottom: 4px; padding-right: 24px; }
+  #card .card-org { color: #a0a0b8; font-size: 12px; margin-bottom: 10px; }
+  #card .card-row { font-size: 12px; line-height: 1.6; margin-top: 6px; }
+  #card .card-label { color: #6060a0; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  #card .card-conn { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  #card .card-chip { background: rgba(124,108,240,0.15); border: 1px solid rgba(140,120,255,0.3); color: #d4c8ff; padding: 2px 8px; border-radius: 6px; font-size: 11px; }
+  #card .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: rgba(0,119,181,0.15);
+    border: 1px solid rgba(0,119,181,0.4);
+    border-radius: 6px;
+    color: #4ea8e8;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s;
+    word-break: break-all;
+  }
+  #card .card-link:hover { background: rgba(0,119,181,0.25); color: #7ec0ef; }
+  #card .card-tier {
+    margin-top: 10px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    text-align: center;
+  }
+  #card .card-tier.t3 { background: rgba(248,113,113,0.15); border: 1px solid rgba(248,113,113,0.4); color: #fca5a5; }
+  #card .card-tier.t2 { background: rgba(251,191,36,0.15); border: 1px solid rgba(251,191,36,0.4); color: #fde68a; }
 </style>
 </head>
 <body>
 <canvas id="c"></canvas>
 
 <div id="tooltip"></div>
+
+<div id="card">
+  <button class="card-close" onclick="closeCard()">×</button>
+  <div id="card-body"></div>
+</div>
 
 <div id="stats">
   <div class="stat-title">Croisement CNCGP</div>
@@ -562,10 +631,71 @@ canvas.addEventListener('wheel', e => {
 
 canvas.addEventListener('click', e => {
   const idx = getNodeAt(e.clientX, e.clientY);
-  if (idx !== null) {
-    const n = nodes[idx];
-    if (n.linkedin) window.open(n.linkedin, '_blank');
+  if (idx !== null) openCard(nodes[idx]);
+});
+
+const cardEl = document.getElementById('card');
+const cardBody = document.getElementById('card-body');
+
+function escapeHtml(s) {
+  return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function openCard(n) {
+  let html = '';
+  if (n.type === 'cgp') {
+    html += '<div class="card-name">' + escapeHtml(n.name) + '</div>';
+    if (n.org) html += '<div class="card-org">' + escapeHtml(n.org) + '</div>';
+
+    if (n.tier >= 3) {
+      html += '<div class="card-tier t3">★★★ Connecté à ' + n.tier + ' personnes</div>';
+    } else if (n.tier === 2) {
+      html += '<div class="card-tier t2">★★ Connecté à 2 personnes</div>';
+    }
+
+    html += '<div class="card-row"><span class="card-label">Confiance LinkedIn</span><br>' + escapeHtml(n.confiance) + '</div>';
+
+    html += '<div class="card-row"><span class="card-label">Connecté à</span><div class="card-conn">';
+    n.conn.forEach(id => {
+      html += '<span class="card-chip">' + escapeHtml(ANCHOR_LABEL[id]) + '</span>';
+    });
+    html += '</div></div>';
+
+    if (n.linkedin) {
+      html += '<a class="card-link" href="' + escapeHtml(n.linkedin) + '" target="_blank" rel="noopener">↗ Ouvrir le profil LinkedIn</a>';
+    }
+  } else {
+    // Anchor node
+    html += '<div class="card-name">' + escapeHtml(n.name) + '</div>';
+    const cgpList = CGPS.filter(c => c.conn.includes(n.id));
+    html += '<div class="card-org">' + cgpList.length + ' CGP CNCGP croisés sur ' + n.totalConn + ' contacts LinkedIn</div>';
+
+    const multi = cgpList.filter(c => c.conn.length > 1).length;
+    if (multi) {
+      html += '<div class="card-row"><span class="card-label">dont multi-connectés</span><br>' + multi + '</div>';
+    }
+
+    html += '<div class="card-row" style="margin-top:10px"><span class="card-label">Liste des CGP</span></div>';
+    html += '<div style="max-height:240px;overflow-y:auto;margin-top:6px;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px">';
+    cgpList.sort((a,b) => b.conn.length - a.conn.length || a.name.localeCompare(b.name)).forEach(c => {
+      const tierMark = c.conn.length >= 3 ? '<span style="color:#f87171">●</span> ' : c.conn.length === 2 ? '<span style="color:#fbbf24">●</span> ' : '';
+      html += '<div style="font-size:12px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)">';
+      html += tierMark + '<a href="' + escapeHtml(c.linkedin) + '" target="_blank" rel="noopener" style="color:#d4c8ff;text-decoration:none">' + escapeHtml(c.name) + '</a>';
+      html += ' <span style="color:#6060a0;font-size:10px">— ' + escapeHtml(c.org) + '</span>';
+      html += '</div>';
+    });
+    html += '</div>';
   }
+  cardBody.innerHTML = html;
+  cardEl.style.display = 'block';
+}
+
+function closeCard() {
+  cardEl.style.display = 'none';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeCard();
 });
 
 function setFilter(f, ev) {
