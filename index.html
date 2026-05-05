@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rockfi × Leleu × CNCGP × Anacofi — Croisement LinkedIn</title>
+<title>Rockfi × Sébastien Leleu × CNCGP × Anacofi — Croisement LinkedIn</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -136,7 +136,7 @@
 <div id="legend">
   <div class="leg-title">Personnes</div>
   <div class="leg-row"><div class="leg-dot" style="background:#a78bfa;width:12px;height:12px"></div> Rockfi (Damien, Pierre, Olric, Sahira)</div>
-  <div class="leg-row"><div class="leg-dot" style="background:#14b8a6;width:12px;height:12px"></div> Externe (Leleu)</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#14b8a6;width:12px;height:12px"></div> Externe (Sébastien Leleu)</div>
   <div style="margin-top:6px" class="leg-title">CGP par base</div>
   <div class="leg-row"><div class="leg-dot" style="background:#34d399"></div> CNCGP — Élevée</div>
   <div class="leg-row"><div class="leg-dot" style="background:#fb923c"></div> CNCGP — Moyenne</div>
@@ -154,7 +154,7 @@
   <button class="fbtn" onclick="setFilter('pierre', event)">Pierre<span class="fbtn-count">32</span></button>
   <button class="fbtn" onclick="setFilter('olric', event)">Olric<span class="fbtn-count">37</span></button>
   <button class="fbtn" onclick="setFilter('sahira', event)">Sahira<span class="fbtn-count">36</span></button>
-  <button class="fbtn external" onclick="setFilter('leleu', event)">Leleu (externe)<span class="fbtn-count">117</span></button>
+  <button class="fbtn external" onclick="setFilter('leleu', event)">Sébastien (externe)<span class="fbtn-count">117</span></button>
   <div class="fsep"></div>
   <button class="fbtn cncgp" onclick="setFilter('cncgp', event)">CNCGP<span class="fbtn-count">130</span></button>
   <button class="fbtn anacofi" onclick="setFilter('anacofi', event)">Anacofi<span class="fbtn-count">81</span></button>
@@ -168,7 +168,7 @@ const ANCHORS = [
   { id:'pierre', name:'Pierre', short:'Pierre', type:'anchor', external:false, totalConn:788, angle:-0.314159 },
   { id:'olric', name:'Olric', short:'Olric', type:'anchor', external:false, totalConn:553, angle:0.942478 },
   { id:'sahira', name:'Sahira', short:'Sahira', type:'anchor', external:false, totalConn:377, angle:2.199115 },
-  { id:'leleu', name:'Leleu', short:'Leleu', type:'anchor', external:true, totalConn:990, angle:3.455752 }
+  { id:'leleu', name:'Sébastien Leleu', short:'Sébastien', type:'anchor', external:true, totalConn:990, angle:3.455752 }
 ];
 
 const CGPS = [
@@ -635,7 +635,7 @@ function getNodeAt(mx, my) {
   return best;
 }
 
-const ANCHOR_LABEL = { damien:'Damien', pierre:'Pierre', olric:'Olric', sahira:'Sahira', leleu:'Leleu' };
+const ANCHOR_LABEL = { damien:'Damien', pierre:'Pierre', olric:'Olric', sahira:'Sahira', leleu:'Sébastien' };
 const BASE_LABEL   = { cncgp:'CNCGP', anacofi:'Anacofi' };
 
 canvas.addEventListener('mousemove', e => {
