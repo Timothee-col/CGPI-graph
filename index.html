@@ -133,10 +133,8 @@
   <div class="leg-row"><div class="leg-dot" style="background:#a78bfa;width:12px;height:12px"></div> Rockfi (Damien, Pierre, Olric, Sahira, Amélie)</div>
   <div class="leg-row"><div class="leg-dot" style="background:#14b8a6;width:12px;height:12px"></div> Externe (Sébastien Leleu)</div>
   <div style="margin-top:6px" class="leg-title">CGP par base</div>
-  <div class="leg-row"><div class="leg-dot" style="background:#34d399"></div> CNCGP — Élevée</div>
-  <div class="leg-row"><div class="leg-dot" style="background:#fb923c"></div> CNCGP — Moyenne</div>
-  <div class="leg-row"><div class="leg-dot" style="background:#ec4899"></div> Anacofi — Élevée</div>
-  <div class="leg-row"><div class="leg-dot" style="background:#f472b6"></div> Anacofi — Moyenne</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#34d399"></div> CNCGP</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#ec4899"></div> Anacofi</div>
   <div class="leg-row"><div class="leg-dot" style="background:#60a5fa"></div> CNCEF</div>
   <div class="leg-row"><div class="leg-dot" style="background:#c084fc"></div> Présent dans plusieurs bases</div>
   <div style="margin-top:6px" class="leg-title">Multi-connectés</div>
@@ -423,13 +421,12 @@ const ANCHOR_STROKE = { rockfi:'#a78bfa', external:'#5eead4' };
 
 function cgpColor(c) {
   const tier = c.conn.length;
-  if (tier >= 5) return '#d946ef';  // magenta for full house
+  if (tier >= 5) return '#d946ef';
   if (tier >= 3) return '#f87171';
   if (tier === 2) return '#fbbf24';
-  const inBoth = c.orgs.length > 1;
-  if (inBoth) return c.confiance === 'Elevee' ? '#c084fc' : '#a78bfa';
-  if (c.orgs[0] === 'cncgp')   return c.confiance === 'Elevee' ? '#34d399' : '#fb923c';
-  if (c.orgs[0] === 'anacofi') return c.confiance === 'Elevee' ? '#ec4899' : '#f472b6';
+  if (c.orgs.length > 1) return '#c084fc';
+  if (c.orgs[0] === 'cncgp') return '#34d399';
+  if (c.orgs[0] === 'anacofi') return '#ec4899';
   if (c.orgs[0] === 'cncef') return '#60a5fa';
   return '#34d399';
 }
@@ -696,7 +693,6 @@ canvas.addEventListener('mousemove', e => {
       html += '<div>';
       n.orgs.forEach(o => { html += '<span class="tt-base ' + o + '">' + BASE_LABEL[o] + '</span>'; });
       html += '</div>';
-      html += '<div class="tt-segment">Confiance LinkedIn : ' + n.confiance + '</div>';
       const connLabel = n.conn.map(id => ANCHOR_LABEL[id]).join(' + ');
       html += '<div class="tt-conn">→ ' + connLabel + '</div>';
       if (n.tier >= 5) html += '<div style="color:#f0abfc;font-size:10px;margin-top:4px">★★★★★ Connecté à 5 personnes</div>';
@@ -754,7 +750,6 @@ function openCard(n) {
     else if (n.tier >= 4) html += '<div class="card-tier t4">★★★★ Connecté à ' + n.tier + ' personnes</div>';
     else if (n.tier >= 3) html += '<div class="card-tier t3">★★★ Connecté à ' + n.tier + ' personnes</div>';
     else if (n.tier === 2) html += '<div class="card-tier t2">★★ Connecté à 2 personnes</div>';
-    html += '<div class="card-row"><span class="card-label">Confiance LinkedIn</span><br>' + escapeHtml(n.confiance) + '</div>';
     html += '<div class="card-row"><span class="card-label">Connecté à</span><div class="card-conn">';
     n.conn.forEach(id => {
       const ext = id === 'leleu' ? ' external' : '';
