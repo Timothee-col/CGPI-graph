@@ -26,6 +26,7 @@
   #tooltip .tt-base { display:inline-block; margin-top:4px; padding:1px 6px; border-radius:4px; font-size:10px; font-weight:500; margin-right:4px; }
   #tooltip .tt-base.cncgp { background:rgba(52,211,153,0.15); border:1px solid rgba(52,211,153,0.4); color:#6ee7b7; }
   #tooltip .tt-base.anacofi { background:rgba(236,72,153,0.15); border:1px solid rgba(236,72,153,0.4); color:#f9a8d4; }
+  #tooltip .tt-base.cncef { background:rgba(96,165,250,0.15); border:1px solid rgba(96,165,250,0.4); color:#93c5fd; }
 
   #legend {
     position:fixed; bottom:20px; left:20px;
@@ -48,6 +49,7 @@
   #stats .stat-val { color:#a78bfa; font-weight:500; }
   #stats .stat-cncgp { color:#6ee7b7; font-weight:500; }
   #stats .stat-anacofi { color:#f9a8d4; font-weight:500; }
+  #stats .stat-cncef { color:#93c5fd; font-weight:500; }
   #stats .stat-multi { color:#fbbf24; font-weight:500; }
   #stats .stat-tier3 { color:#f87171; font-weight:500; }
   #stats .stat-title { font-family:'IBM Plex Sans',sans-serif; font-size:11px; color:#6060a0; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
@@ -74,6 +76,9 @@
   .fbtn.anacofi { border-color:rgba(236,72,153,0.25); }
   .fbtn.anacofi:hover { border-color:rgba(236,72,153,0.5); color:#f9a8d4; }
   .fbtn.anacofi.active { border-color:rgba(236,72,153,0.7); color:#f9a8d4; background:rgba(236,72,153,0.10); }
+  .fbtn.cncef { border-color:rgba(96,165,250,0.25); }
+  .fbtn.cncef:hover { border-color:rgba(96,165,250,0.5); color:#93c5fd; }
+  .fbtn.cncef.active { border-color:rgba(96,165,250,0.7); color:#93c5fd; background:rgba(96,165,250,0.10); }
   .fbtn .fbtn-count { float:right; color:#6060a0; margin-left:12px; font-family:'IBM Plex Mono',monospace; }
   .fsep { height:1px; background:rgba(255,255,255,0.08); margin:4px 0; }
 
@@ -96,6 +101,7 @@
   #card .card-chip.external { background:rgba(20,184,166,0.15); border-color:rgba(20,184,166,0.4); color:#5eead4; }
   #card .card-chip.cncgp { background:rgba(52,211,153,0.15); border-color:rgba(52,211,153,0.4); color:#6ee7b7; }
   #card .card-chip.anacofi { background:rgba(236,72,153,0.15); border-color:rgba(236,72,153,0.4); color:#f9a8d4; }
+  #card .card-chip.cncef { background:rgba(96,165,250,0.15); border-color:rgba(96,165,250,0.4); color:#93c5fd; }
   #card .card-link { display:inline-flex; align-items:center; gap:6px; margin-top:12px; padding:8px 12px; background:rgba(0,119,181,0.15); border:1px solid rgba(0,119,181,0.4); border-radius:6px; color:#4ea8e8; text-decoration:none; font-size:12px; font-weight:500; transition:all 0.2s; word-break:break-all; }
   #card .card-link:hover { background:rgba(0,119,181,0.25); color:#7ec0ef; }
   #card .card-tier { margin-top:10px; padding:6px 10px; border-radius:6px; font-size:11px; font-weight:500; text-align:center; }
@@ -117,9 +123,9 @@
 
 <div id="stats">
   <div class="stat-title">Croisement</div>
-  <span class="stat-val">217</span> CGP connectés<br>
-  <span class="stat-cncgp">146</span> CNCGP &nbsp;<span class="stat-anacofi">76</span> Anacofi<br>
-  <span class="stat-multi">34</span> communs (≥2) &nbsp;<span class="stat-tier3">7</span> à 3+
+  <span class="stat-val">239</span> CGP connectés<br>
+  <span class="stat-cncgp">146</span> CNCGP&nbsp;&nbsp;<span class="stat-anacofi">76</span> Anacofi&nbsp;&nbsp;<span class="stat-cncef">25</span> CNCEF<br>
+  <span class="stat-multi">35</span> communs (≥2) &nbsp;<span class="stat-tier3">7</span> à 3+
 </div>
 
 <div id="legend">
@@ -131,7 +137,8 @@
   <div class="leg-row"><div class="leg-dot" style="background:#fb923c"></div> CNCGP — Moyenne</div>
   <div class="leg-row"><div class="leg-dot" style="background:#ec4899"></div> Anacofi — Élevée</div>
   <div class="leg-row"><div class="leg-dot" style="background:#f472b6"></div> Anacofi — Moyenne</div>
-  <div class="leg-row"><div class="leg-dot" style="background:#c084fc"></div> Présent dans les 2 bases</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#60a5fa"></div> CNCEF</div>
+  <div class="leg-row"><div class="leg-dot" style="background:#c084fc"></div> Présent dans plusieurs bases</div>
   <div style="margin-top:6px" class="leg-title">Multi-connectés</div>
   <div class="leg-row"><div class="leg-dot" style="background:#fbbf24"></div> 2 personnes</div>
   <div class="leg-row"><div class="leg-dot" style="background:#f87171"></div> 3-4 personnes</div>
@@ -139,18 +146,19 @@
 </div>
 
 <div id="filters">
-  <button class="fbtn active" onclick="setFilter('all', event)">All<span class="fbtn-count">217</span></button>
-  <button class="fbtn" onclick="setFilter('damien', event)">Damien<span class="fbtn-count">23</span></button>
-  <button class="fbtn" onclick="setFilter('pierre', event)">Pierre<span class="fbtn-count">31</span></button>
-  <button class="fbtn" onclick="setFilter('olric', event)">Olric<span class="fbtn-count">31</span></button>
-  <button class="fbtn" onclick="setFilter('sahira', event)">Sahira<span class="fbtn-count">27</span></button>
-  <button class="fbtn" onclick="setFilter('amelie', event)">Amélie<span class="fbtn-count">31</span></button>
-  <button class="fbtn external" onclick="setFilter('leleu', event)">Sébastien (externe)<span class="fbtn-count">116</span></button>
+  <button class="fbtn active" onclick="setFilter('all', event)">All<span class="fbtn-count">239</span></button>
+  <button class="fbtn" onclick="setFilter('damien', event)">Damien<span class="fbtn-count">26</span></button>
+  <button class="fbtn" onclick="setFilter('pierre', event)">Pierre<span class="fbtn-count">37</span></button>
+  <button class="fbtn" onclick="setFilter('olric', event)">Olric<span class="fbtn-count">33</span></button>
+  <button class="fbtn" onclick="setFilter('sahira', event)">Sahira<span class="fbtn-count">29</span></button>
+  <button class="fbtn" onclick="setFilter('amelie', event)">Amélie<span class="fbtn-count">35</span></button>
+  <button class="fbtn external" onclick="setFilter('leleu', event)">Sébastien (externe)<span class="fbtn-count">122</span></button>
   <div class="fsep"></div>
   <button class="fbtn cncgp" onclick="setFilter('cncgp', event)">CNCGP<span class="fbtn-count">146</span></button>
   <button class="fbtn anacofi" onclick="setFilter('anacofi', event)">Anacofi<span class="fbtn-count">76</span></button>
+  <button class="fbtn cncef" onclick="setFilter('cncef', event)">CNCEF<span class="fbtn-count">25</span></button>
   <div class="fsep"></div>
-  <button class="fbtn" onclick="setFilter('multi', event)">Multi-connectés<span class="fbtn-count">34</span></button>
+  <button class="fbtn" onclick="setFilter('multi', event)">Multi-connectés<span class="fbtn-count">35</span></button>
 </div>
 
 <script>
@@ -170,217 +178,239 @@ const CGPS = [
   { id:'c3', name:'Maxime DURAND', org:'AGAPE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/maxime-durand-agape-patrimoine', confiance:'Elevee', conn:['amelie','damien','sahira'], orgs:['cncgp'] },
   { id:'c4', name:'Pierre-marie Erwan Loncle De Forville', org:'IVESTA FAMILY OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/pierre-marie-de-forville-0490465', confiance:'Elevee', conn:['leleu','olric','pierre'], orgs:['anacofi'] },
   { id:'c5', name:'Souleymane-Jean GALADIMA', org:'SAPIANS', cabCount:1, linkedin:'https://fr.linkedin.com/in/souleymane-jean-galadima', confiance:'Elevee', conn:['amelie','leleu','pierre'], orgs:['cncgp'] },
-  { id:'c6', name:'Malcolm VINCENT', org:'BC FINANCES (+15 cabinets)', cabCount:16, linkedin:'https://fr.linkedin.com/in/malcolm-vincent-astoria', confiance:'Elevee', conn:['amelie','leleu','pierre'], orgs:['anacofi','cncgp'] },
+  { id:'c6', name:'Malcolm VINCENT', org:'BC FINANCES (+15 cabinets)', cabCount:16, linkedin:'https://fr.linkedin.com/in/malcolm-vincent-astoria', confiance:'Elevee', conn:['amelie','leleu','pierre'], orgs:['anacofi','cncef','cncgp'] },
   { id:'c7', name:'Meyer AZOGUI', org:'CYRUS HEREZ (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/meyerazogui', confiance:'Elevee', conn:['amelie','leleu'], orgs:['cncgp'] },
   { id:'c8', name:'Sebastien Jean-francois Astre', org:'GROUPE CG2P', cabCount:1, linkedin:'https://fr.linkedin.com/in/sebastienastre', confiance:'Moyenne', conn:['olric','pierre'], orgs:['anacofi'] },
   { id:'c9', name:'Olivier BONTOUX', org:'MYWAY FAMILY OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/olivier-bontoux-00a6714', confiance:'Elevee', conn:['leleu','pierre'], orgs:['cncgp'] },
-  { id:'c10', name:'Eugène CONSTANT', org:'AMBRE GESTION DE PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/eugeneconstantgestionpatrimoine/', confiance:'Elevee', conn:['leleu','pierre'], orgs:['cncgp'] },
-  { id:'c11', name:'Yoann Messod Raphael Castiel', org:'CASTIEL & ASSOCIES', cabCount:1, linkedin:'https://fr.linkedin.com/in/yoann-castiel-3925047', confiance:'Elevee', conn:['damien','olric'], orgs:['anacofi'] },
-  { id:'c12', name:'Antoine DELON', org:'IRBIS SOLUTIONS (+2 cabinets)', cabCount:3, linkedin:'https://fr.linkedin.com/in/antoine-delon-5aa5838', confiance:'Elevee', conn:['amelie','leleu'], orgs:['cncgp'] },
-  { id:'c13', name:'Johan DIDOUCHE', org:'J.A.M CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/johandidouche/', confiance:'Moyenne', conn:['leleu','olric'], orgs:['cncgp'] },
-  { id:'c14', name:'Virginie DUFFOUR', org:'BEELONG FAMILY OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/virginie-duffour-2ab1a32', confiance:'Elevee', conn:['amelie','leleu'], orgs:['cncgp'] },
-  { id:'c15', name:'Bruno Dominguez', org:'FORTUNIAL', cabCount:1, linkedin:'https://fr.linkedin.com/in/bruno-dominguez-510a8970', confiance:'Elevee', conn:['damien','sahira'], orgs:['anacofi'] },
-  { id:'c16', name:'Sandrine GENET', org:'CARAT CAPITAL', cabCount:1, linkedin:'https://fr.linkedin.com/in/sandrine-genet', confiance:'Elevee', conn:['leleu','pierre'], orgs:['cncgp'] },
-  { id:'c17', name:'Enzo Hallot', org:'FINANCIERE HODL', cabCount:1, linkedin:'https://fr.linkedin.com/in/enzo-hallot', confiance:'Elevee', conn:['olric','sahira'], orgs:['anacofi'] },
-  { id:'c18', name:'Sebastien Janin', org:'LINKS', cabCount:1, linkedin:'https://fr.linkedin.com/in/sebastienjanin', confiance:'Moyenne', conn:['damien','olric'], orgs:['anacofi'] },
-  { id:'c19', name:'Ahmed Khelifa', org:'L\'ALLOCATAIRE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ahmedkhelifa', confiance:'Elevee', conn:['pierre','sahira'], orgs:['anacofi'] },
-  { id:'c20', name:'Simon LOLMEDE', org:'ORIGAMI 31', cabCount:1, linkedin:'https://fr.linkedin.com/in/simonlolmede', confiance:'Elevee', conn:['amelie','sahira'], orgs:['cncgp'] },
-  { id:'c21', name:'Fabrice Lagreou', org:'H TAX PLANNERS', cabCount:1, linkedin:'https://www.linkedin.com/in/fabricelagreou/', confiance:'Elevee', conn:['leleu','pierre'], orgs:['anacofi'] },
-  { id:'c22', name:'Régis MEYER', org:'FAMILY GESTION PRIVEE (+2 cabinets)', cabCount:3, linkedin:'https://fr.linkedin.com/in/regis-meyer', confiance:'Elevee', conn:['amelie','leleu'], orgs:['cncgp'] },
-  { id:'c23', name:'Stephane Molere', org:'ETHIQUE ET PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/stephane-molere/', confiance:'Moyenne', conn:['olric','sahira'], orgs:['anacofi'] },
-  { id:'c24', name:'Emmanuel NARRAT', org:'HAUSSMANN PATRIMOINE (+3 cabinets)', cabCount:4, linkedin:'https://fr.linkedin.com/in/emmanuel-narrat-7033a61', confiance:'Elevee', conn:['leleu','olric'], orgs:['cncgp'] },
-  { id:'c25', name:'Marianne NAVARRE', org:'MARIANNE NAVARRE CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/marianne-navarre-2561a32/', confiance:'Elevee', conn:['leleu','pierre'], orgs:['cncgp'] },
-  { id:'c26', name:'Nicolas ONEN', org:'H360 CONSEILS', cabCount:1, linkedin:'https://www.linkedin.com/in/onennicolas/', confiance:'Elevee', conn:['leleu','sahira'], orgs:['cncgp'] },
-  { id:'c27', name:'Olric Ournac', org:'B.O.O GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/olric-ournac-b043ba60', confiance:'Elevee', conn:['damien','sahira'], orgs:['anacofi'] },
-  { id:'c28', name:'Arnaud PERRIER', org:'INKIPIT FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/arnaud-perrier-3086533/', confiance:'Elevee', conn:['leleu','pierre'], orgs:['cncgp'] },
-  { id:'c29', name:'Benoit Jean Alexandre Petit', org:'INTER INVEST PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/benoitpetit1', confiance:'Elevee', conn:['leleu','pierre'], orgs:['anacofi'] },
-  { id:'c30', name:'Nicolas Gregoire Alexandre Pilikian', org:'LIFT', cabCount:1, linkedin:'https://fr.linkedin.com/in/nicolaspilikian', confiance:'Elevee', conn:['leleu','pierre'], orgs:['anacofi'] },
-  { id:'c31', name:'JOHANN SCHWIMANN', org:'SEVEN CAPITAL MANAGEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/johann-schwimann-1948406', confiance:'Elevee', conn:['leleu','sahira'], orgs:['cncgp'] },
-  { id:'c32', name:'Stephane Schaepelynck', org:'SCAP CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/stephane-schaepelynck-3760b620', confiance:'Elevee', conn:['leleu','sahira'], orgs:['anacofi'] },
-  { id:'c33', name:'Michel Raphaël Szecowka', org:'AMm fo', cabCount:1, linkedin:'https://www.linkedin.com/in/michel-szecowka/', confiance:'Moyenne', conn:['leleu','pierre'], orgs:['anacofi'] },
-  { id:'c34', name:'Jean-Luc ABERT', org:'A.I.C. PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/jean-luc-abert-9a913618', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c35', name:'Maxime ALIMI', org:'EQUINOXE GP (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/maxime-alimi-0412537', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c36', name:'Ruben AOUIZERATE', org:'BEYOND WEALTH', cabCount:1, linkedin:'https://fr.linkedin.com/in/ruben-aouizerate-58117319', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c37', name:'Johann AUBERT', org:'H\'ARPE CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/johann-aubert-ba687b110', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
-  { id:'c38', name:'Marc AUCHABIE', org:'NOVAM', cabCount:1, linkedin:'https://fr.linkedin.com/in/marcauchabie', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c39', name:'Marc Amiel', org:'AFFILIOR GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/marcamiel', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c40', name:'Veronique Aubin', org:'XELIS FAMILY OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/veronique-aubin-36887619?trk=public_post_reshare-text', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c41', name:'Guillaume BACHY', org:'TRIUM ASSOCIÉS', cabCount:1, linkedin:'https://fr.linkedin.com/in/guillaume-bachy', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
-  { id:'c42', name:'Pascal BADIER', org:'MILESTONE (+2 cabinets)', cabCount:3, linkedin:'https://www.linkedin.com/in/pascalbadier/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c43', name:'Florent BARBIER', org:'PATRIMOINE PIERRE ET FINANCES', cabCount:1, linkedin:'https://www.linkedin.com/in/florent-barbier-20140016/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c44', name:'Dimitri BARCELONE', org:'KANOPE', cabCount:1, linkedin:'https://fr.linkedin.com/in/dimitri-barcelone-4a3a9012', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c45', name:'Gilles BELLOIR', org:'SAS PLACEMENT DIRECT', cabCount:1, linkedin:'https://fr.linkedin.com/in/gilles-belloir-12a2471', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c46', name:'Edouard BINET', org:'PEETERS PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/edouardbinet/', confiance:'Elevee', conn:['damien'], orgs:['cncgp'] },
-  { id:'c47', name:'Franck BONIN', org:'OSEIS GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/franck-bonin-4a998040', confiance:'Moyenne', conn:['olric'], orgs:['cncgp'] },
-  { id:'c48', name:'Mario BOSSETTI', org:'TAORMINA CAPITAL', cabCount:1, linkedin:'https://fr.linkedin.com/in/mario-bossetti-12715017', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c49', name:'Jean-Baptiste BRETTE', org:'ONLY 2F (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/jean-baptiste-brette-5559b910', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c50', name:'Paul BUZY', org:'FAP-INVEST', cabCount:1, linkedin:'https://www.linkedin.com/in/paul-buzy-62564a130/', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
-  { id:'c51', name:'Samuel Barnier', org:'GAIA CONSEIL ET PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/samuel-barnier-37224219', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c52', name:'Nicolas Bazinet', org:'BienPlacer.fr', cabCount:1, linkedin:'https://fr.linkedin.com/in/bazinetnicolas', confiance:'Elevee', conn:['pierre'], orgs:['anacofi'] },
-  { id:'c53', name:'Laurent Simon Bellaiche', org:'ARGOS INVEST', cabCount:1, linkedin:'https://fr.linkedin.com/in/laurentbellaiche', confiance:'Moyenne', conn:['damien'], orgs:['anacofi'] },
-  { id:'c54', name:'Rodolphe Bereby', org:'WAGRAM PARTNERS', cabCount:1, linkedin:'https://fr.linkedin.com/in/rodolphebereby', confiance:'Elevee', conn:['pierre'], orgs:['anacofi'] },
-  { id:'c55', name:'Bruno Bernard', org:'UCP CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/bruno-bernard-', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c56', name:'Alexis Jacques Bied', org:'SANALA PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/alexis-bied-sanala', confiance:'Elevee', conn:['damien'], orgs:['anacofi'] },
-  { id:'c57', name:'Fabien Bismuth', org:'FINANCIÈRE MEESCHAERT', cabCount:1, linkedin:'https://fr.linkedin.com/in/fabien-bismuth-a886502', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c58', name:'Alexandre Boissarie', org:'ALTHEO PARTNERS', cabCount:1, linkedin:'https://be.linkedin.com/in/alexandre-boissarie-1470409', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c59', name:'Yannick Gilles Bouet', org:'YB CONSEILS', cabCount:1, linkedin:'https://fr.linkedin.com/in/yannick-bouet-b912761a', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c60', name:'Yannick Georges Bruneau', org:'CAP PATRIMONIAL', cabCount:1, linkedin:'https://fr.linkedin.com/in/yannick-bruneau-4557444/fr', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c61', name:'Fabien CABEZON', org:'FABIEN CABEZON - HGP', cabCount:1, linkedin:'https://fr.linkedin.com/in/fabien-cabezon-96a6a613', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c62', name:'ANTHONY CALCI', org:'CALCI ANTHONY (CALCI PATRIMOINE)', cabCount:1, linkedin:'https://fr.linkedin.com/in/anthonycalci', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c63', name:'Maxime CAMUS', org:'GRISBEE GESTION PRIVEE (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/maxime-camus-58a7541/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c64', name:'Maelle CARAVACA', org:'EN PRIVE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ma%C3%ABlle-caravaca-a5164028', confiance:'Moyenne', conn:['sahira'], orgs:['cncgp'] },
-  { id:'c65', name:'Maelle CARAVACA', org:'EN PRIVE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ma%C3%ABlle-caravaca-a5164028', confiance:'Moyenne', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c66', name:'Stéphane CARLUCCI', org:'KEVANO PATRIMOINE (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/stephane-carlucci-7a683015', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c67', name:'Philippe CAZADIEU', org:'PARIS PRIVATE FINANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/philippe-cazadieu-00626515', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c68', name:'Marion CHAPEL-MASSOT', org:'DECARION OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/marion-chapel-massot', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c69', name:'Emilie CHARBONNEL', org:'ALYTIS GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/emilie-charbonnel-42a822a', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c70', name:'Benjamin COHEN', org:'RIVIERA WEALTH MANAGEMENT', cabCount:1, linkedin:'https://www.linkedin.com/in/benjamin-cohen-78091225/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c71', name:'Nicolas COMMEROT', org:'ALTITUDE INVESTMENTS SOLUTIONS', cabCount:1, linkedin:'https://fr.linkedin.com/in/nicolas-commerot', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
-  { id:'c72', name:'Yves CONAN', org:'IRBIS SOLUTIONS', cabCount:1, linkedin:'https://fr.linkedin.com/in/yves-conan-8476591', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
-  { id:'c73', name:'Charles COULOMBAN', org:'B-INVESTISSEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/charles-coulomban-aa7441a', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c74', name:'Thierry CREUX', org:'B-INVESTISSEMENT (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/thierry-creux-2918971a/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c75', name:'Anthony CROS', org:'CROS INVESTING', cabCount:1, linkedin:'https://www.linkedin.com/in/anthonycros/', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c76', name:'Anne-Aurore CUZOL', org:'INNOLIANCE CONSEIL & PATRIMOINE (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/aacuzol/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c77', name:'Remi Canova', org:'ALGOW', cabCount:1, linkedin:'https://fr.linkedin.com/in/r%C3%A9mi-canova-36157a1', confiance:'Moyenne', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c78', name:'Jean-pierre Champin', org:'PATRIMOINE PRIVE', cabCount:1, linkedin:'https://www.linkedin.com/in/jean-pierre-champin-a8433111/', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c79', name:'Joseph Choueifaty', org:'GOODVEST', cabCount:1, linkedin:'https://fr.linkedin.com/in/josephchoueifaty', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
-  { id:'c80', name:'Ronan Edouard Michel Colas', org:'RC WEALTH', cabCount:1, linkedin:'https://fr.linkedin.com/in/ronan-colas', confiance:'Elevee', conn:['sahira'], orgs:['anacofi'] },
-  { id:'c81', name:'Jean-yves DE Louvigny', org:'FAMILITY', cabCount:1, linkedin:'https://www.linkedin.com/in/jean-yves-de-louvigny-79a88519/', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c82', name:'Alexandre DE SAGAZAN', org:'ARGUIN CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/alexandre-de-sagazan-2bb9012', confiance:'Moyenne', conn:['pierre'], orgs:['cncgp'] },
-  { id:'c83', name:'Rachel DE VALICOURT', org:'LINARD CHARBONNEL (+3 cabinets)', cabCount:4, linkedin:'https://fr.linkedin.com/in/rachel-de-valicourt', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
-  { id:'c84', name:'Christian DE Witt', org:'DWT FAMILY OFFICE', cabCount:1, linkedin:'https://www.linkedin.com/in/christiandewitt/', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
-  { id:'c85', name:'GAUTIER DELABROUSSE-MAYOUX', org:'IROKO', cabCount:1, linkedin:'https://fr.linkedin.com/in/gautier-delabrousse-mayoux-73986717', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c86', name:'Gregory DELMAS', org:'EURO PATRIMOINE INVESTISSEMENT', cabCount:1, linkedin:'https://www.linkedin.com/in/gregory-delmas-76242815/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c87', name:'Nicolas DEMYTTENAERE', org:'KINO GESTION PRIVÉE (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/nicolas-demyttenaere-3570866', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c88', name:'Caroline DERYCKE', org:'SERENA CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/caroline-derycke-serena-conseil/', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
-  { id:'c89', name:'Tathy DIALLO', org:'PCA FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/tathy-diallo-b31733143', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
-  { id:'c90', name:'Dominique DIMIER', org:'CAE CONTACT ASSISTANCE ENTREPRISE (+2 cabinets)', cabCount:3, linkedin:'https://www.linkedin.com/in/dominique-dimier/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c91', name:'Julien DUPONT', org:'DUPONT CONSEIL GESTION ET ASSOCIES SARL', cabCount:1, linkedin:'https://fr.linkedin.com/in/julien-dupont-032305107', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c92', name:'Julien DUPONT', org:'DUPONT CONSEIL GESTION ET ASSOCIES SARL', cabCount:1, linkedin:'https://fr.linkedin.com/in/julien-dupont-032305107', confiance:'Moyenne', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c93', name:'Benjamin DURAND', org:'B DURAND CAPITAL PARTNERS', cabCount:1, linkedin:'https://fr.linkedin.com/in/benjamin-durand', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c94', name:'Maxime DURAND', org:'AGAPE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/maxime-durand-agape-patrimoine', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c95', name:'Julien DUSSAUSSAY', org:'REFERENCE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/julien-dussaussay-8852633', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c96', name:'Nicolas Decaudain', org:'PROSPER CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/nicolasdecaudain', confiance:'Elevee', conn:['amelie'], orgs:['anacofi'] },
-  { id:'c97', name:'Bernard Delattre', org:'ALTIMEO PARTICIPATIONS', cabCount:1, linkedin:'https://fr.linkedin.com/in/bernard-delattre-4835719a', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c98', name:'Lan Descolonges', org:'KACIUS', cabCount:1, linkedin:'https://www.linkedin.com/in/l%C3%A2n-descolonges-5828ba19/', confiance:'Moyenne', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c99', name:'Jonathan Dhiver', org:'MEILLEURESCPI.COM', cabCount:1, linkedin:'https://fr.linkedin.com/in/jonathandhiver', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c100', name:'John ELALOUF', org:'MONALIZA', cabCount:1, linkedin:'https://fr.linkedin.com/in/john-elalouf-6124a84', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
-  { id:'c101', name:'Romain ELMOSNINO', org:'VESTED GESTION PRIVEE (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/romain-elmosnino', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c102', name:'GUILLAUME EYSSETTE', org:'GEFINEO', cabCount:1, linkedin:'https://fr.linkedin.com/in/guillaume-eyssette-0b1314', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c103', name:'Sabri FAKROUNE', org:'KELONYA', cabCount:1, linkedin:'https://fr.linkedin.com/in/sabri-fakroune-13887a25', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c104', name:'Guillaume FALLER', org:'GF PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/guillaume-faller-8905552', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
-  { id:'c105', name:'Ludovic FARNAULT', org:'MEYON ULTIM PARIS', cabCount:1, linkedin:'https://fr.linkedin.com/in/ludovic-farnault-44846613', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c106', name:'David FERRIER', org:'FERRIER CONSEILS & PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/davidferrier/', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c107', name:'Charlotte FLINOIS', org:'LBI PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/charlotte-flinois-759b822/en', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
-  { id:'c108', name:'Benjamin FLOTTES DE POUZOLS', org:'WENIMMO', cabCount:1, linkedin:'https://fr.linkedin.com/in/benjamin-flottes-de-pouzols-4aa31417', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c109', name:'Benjamin FLOTTES DE POUZOLS', org:'WENIMMO', cabCount:1, linkedin:'https://fr.linkedin.com/in/benjamin-flottes-de-pouzols-4aa31417', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c110', name:'Cyril Michel Franco', org:'MALOAN FINANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/cyril-franco-71972bb0', confiance:'Elevee', conn:['damien'], orgs:['anacofi'] },
-  { id:'c111', name:'Antoine Freysz', org:'KERALA VENTURES', cabCount:1, linkedin:'https://fr.linkedin.com/in/antoinefreysz', confiance:'Elevee', conn:['pierre'], orgs:['anacofi'] },
-  { id:'c112', name:'Loïc GACH', org:'OUTMATCH INVEST', cabCount:1, linkedin:'https://www.linkedin.com/in/lo%C3%AFc-gach-76662a23/', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
-  { id:'c113', name:'Patrick GANANSIA', org:'CYRUS HEREZ', cabCount:1, linkedin:'https://fr.linkedin.com/in/patrick-ganansia-82565824', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c114', name:'Cédric GENET', org:'CARAT CAPITAL (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/c%C3%A9dric-genet-934151a9', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c115', name:'Jean-Christian GEY', org:'MONSIEURGEY', cabCount:1, linkedin:'https://fr.linkedin.com/in/jean-christian-gey-a6760a129', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
-  { id:'c116', name:'Brice GIMENO', org:'QUADRATIS', cabCount:1, linkedin:'https://fr.linkedin.com/in/brice-gimeno', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
-  { id:'c117', name:'Xavier GIRARD', org:'CENTRE DU PATRIMOINE XG', cabCount:1, linkedin:'https://fr.linkedin.com/in/xavier-girard-126aa8114', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c118', name:'Joël GIROD', org:'BERGER ET ASSOCIES', cabCount:1, linkedin:'https://fr.linkedin.com/in/jo%C3%ABl-girod-53644a20', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
-  { id:'c119', name:'Hubert GIRONDEL', org:'INITIAL FAMILY OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/hubert-girondel-63272155', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
-  { id:'c120', name:'Jérôme GLODAS', org:'ZALPHA (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/jerome-glodas-9a83212a', confiance:'Elevee', conn:['damien'], orgs:['anacofi','cncgp'] },
-  { id:'c121', name:'Amaury GOSSÉ', org:'LA MUETTE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/amaury-goss%C3%A9-56753b1', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
-  { id:'c122', name:'Philippe GOURDELIER', org:'NIPHICAP', cabCount:1, linkedin:'https://fr.linkedin.com/in/philippe-gourdelier-9a6a9a5', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c123', name:'Olivier GRENON-ANDRIEU', org:'EQUANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/grenon-andrieu-olivier', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c124', name:'Caroline GRINDA-KALBACHER', org:'KYOSEIL AM', cabCount:1, linkedin:'https://fr.linkedin.com/in/caroline-grinda-kalbacher-0a991519', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c125', name:'David Guyot', org:'PANDAT FINANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/david-guyot-43174a6', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c126', name:'Samuel HADDAD', org:'OPTIMIUM FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/samuel-haddad-5843653/', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c127', name:'Jean-Baptiste HOLTZ', org:'WEALTH CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/jbholtz/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c128', name:'Serge Harroch', org:'ALPHA PHI', cabCount:1, linkedin:'https://fr.linkedin.com/in/serge-harroch-alpha-phi-274aaa15', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
-  { id:'c129', name:'Serge Harroch', org:'ALPHA PHI', cabCount:1, linkedin:'https://fr.linkedin.com/in/serge-harroch-alpha-phi-274aaa15', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c130', name:'Richard Henri Houbron', org:'EXPERTS EN PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/richardhoubron/', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c131', name:'Nicolas Hubert', org:'ROCHEBONNE FINANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/nicolas-hubert-5135a95', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c132', name:'Guillaume Hublot', org:'KMH GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/guillaume-hublot-193a7632', confiance:'Elevee', conn:['amelie'], orgs:['anacofi'] },
-  { id:'c133', name:'Philippe Isnard', org:'AELLA CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/philippe-isnard-6ab7442', confiance:'Elevee', conn:['pierre'], orgs:['anacofi'] },
-  { id:'c134', name:'Patrick JANEL', org:'ALETIA', cabCount:1, linkedin:'https://fr.linkedin.com/in/patrick-janel-1450973', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c135', name:'Romain JOUDELAT', org:'ROCHEVELLE GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/romain-joudelat-96535832', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c136', name:'Mathieu Aurelien Juchet', org:'ALTUREA INVESTISSEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/mathieu-juchet', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
-  { id:'c137', name:'Christophe KAH', org:'EURO PATRIMOINE INVESTISSEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/christophe-kah-b035391', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c138', name:'Mounir LAGGOUNE', org:'FINARY', cabCount:1, linkedin:'https://fr.linkedin.com/in/mounirlaggoune', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
-  { id:'c139', name:'Yann LE HER', org:'23IS', cabCount:1, linkedin:'https://fr.linkedin.com/in/yann-le-her-21569a13', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
-  { id:'c140', name:'Sylvain LEFEVRE', org:'SYLVAIN LEFEVRE FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/lef%C3%A8vre-sylvain-a363602a2/', confiance:'Moyenne', conn:['damien'], orgs:['cncgp'] },
-  { id:'c141', name:'Jérémy LELLOUCHE', org:'PERENITIS', cabCount:1, linkedin:'https://www.linkedin.com/in/jeremylellouche/', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c142', name:'FRANCOIS LELONG', org:'LELONG FRANCOIS', cabCount:1, linkedin:'https://fr.linkedin.com/in/francois-lelong-5a542254', confiance:'Elevee', conn:['amelie'], orgs:['anacofi'] },
-  { id:'c143', name:'Sabine LENAERTS', org:'VERTIGO BY ID', cabCount:1, linkedin:'https://fr.linkedin.com/in/sabinelenaerts', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c144', name:'François-Xavier LENIER', org:'FACTEUR 7', cabCount:1, linkedin:'https://www.linkedin.com/in/fxl%C3%A9nier/', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c145', name:'Alexandre LEROY', org:'MFP CONSEIL ET IMMOBILIER', cabCount:1, linkedin:'https://www.linkedin.com/in/alexandre-olivier-leroy-b4929618/', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c146', name:'Adrien LHERMITTE', org:'LINAVEST', cabCount:1, linkedin:'https://fr.linkedin.com/in/adrien-lhermitte', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c147', name:'Caroline LIM', org:'SERENDIP PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/carolinelim-serendippatrimoine', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c148', name:'Aurélia LOVADINA', org:'CLEOS GESTION PRIVÉE', cabCount:1, linkedin:'https://fr.linkedin.com/in/aur%C3%A9lia-lovadina-cfa-9a964124', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
-  { id:'c149', name:'Kevin Le Calvez', org:'LES HERMINES GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/kevin-calvez-725b46298', confiance:'Elevee', conn:['damien'], orgs:['anacofi'] },
-  { id:'c150', name:'Franck Gerard Claude Lelong', org:'ARIAX PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/franck-lelong-a4116512', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c151', name:'Guillaume Lucchini', org:'LUCCHINI & PARTNERS (+3 cabinets)', cabCount:4, linkedin:'https://fr.linkedin.com/in/guillaume-lucchini-36ab9596', confiance:'Elevee', conn:['amelie'], orgs:['anacofi'] },
-  { id:'c152', name:'Baptiste MAES', org:'OFILAE LILLE', cabCount:1, linkedin:'https://fr.linkedin.com/in/baptiste-maes-93537314', confiance:'Elevee', conn:['leleu'], orgs:['anacofi','cncgp'] },
-  { id:'c153', name:'Ninon MANARANCHE-MICHEL', org:'AMANTHEE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ninonmanaranchemichel', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c154', name:'Matthieu MANCUSO', org:'EGEO CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/matthieu-mancuso', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
-  { id:'c155', name:'Pascal MARTIN', org:'GENERATION ET PATRIMOINE (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/pascal-martin-b0b59a17/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c156', name:'François MARTINEAU', org:'LEF CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/fran%C3%A7ois-martineau/', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c157', name:'VINCENT MARTINS', org:'MARTINS VINCENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/vincent-martins-61b79632a', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c158', name:'Henry MASDEVALL', org:'VALOREY FINANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/henry-masdevall-15b1bb19', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c159', name:'Philippe MATTER', org:'ALTERNATIVE PATRIMONIALE', cabCount:1, linkedin:'https://www.linkedin.com/in/philippematter/', confiance:'Elevee', conn:['damien'], orgs:['cncgp'] },
-  { id:'c160', name:'Olivier MAURO', org:'ACTEA PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/olivier-mauro-318b781', confiance:'Moyenne', conn:['pierre'], orgs:['cncgp'] },
-  { id:'c161', name:'François MAZET', org:'MV PARTENAIRES', cabCount:1, linkedin:'https://www.linkedin.com/in/fran%C3%A7ois-mazet-33549b16/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c162', name:'Ethel MOLINA', org:'MA GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ethel-molina-86778525', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
-  { id:'c163', name:'Franck Magne', org:'EAVEST', cabCount:1, linkedin:'https://fr.linkedin.com/in/franck-magne-13b9b64', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c164', name:'Harry Martin', org:'ARTHA GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/harrymartinnoaro', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c165', name:'Florian Mazard', org:'THALEA CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/florian-mazard', confiance:'Elevee', conn:['sahira'], orgs:['anacofi'] },
-  { id:'c166', name:'Vincent Daniel Meilhac', org:'VGM CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/vincent-meilhac-8a889557', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
-  { id:'c167', name:'Alexis Molines', org:'AML FINANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/alexis-molines-87a4b088', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
-  { id:'c168', name:'Franck Morel', org:'SURPERFORMANCE SAS', cabCount:1, linkedin:'https://fr.linkedin.com/in/franck-morel-b9aa137', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c169', name:'Laetitia NGOMA', org:'DIAMOND COMPAGNIE', cabCount:1, linkedin:'https://fr.linkedin.com/in/laetitia-ngoma', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
-  { id:'c170', name:'Quentin Nansot', org:'LE NOUVEAU PLACEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/quentin-nansot-5a598710', confiance:'Elevee', conn:['damien'], orgs:['anacofi'] },
-  { id:'c171', name:'Erwan Nicolas', org:'VELOURS FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/erwan-nicolas-64b0975b/', confiance:'Elevee', conn:['damien'], orgs:['anacofi'] },
-  { id:'c172', name:'Jérémy ORFEO', org:'WEELIM', cabCount:1, linkedin:'https://www.linkedin.com/in/jorfeo/', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c173', name:'Valentin PAPET', org:'BEAUVOISINE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/valentin-papet', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
-  { id:'c174', name:'Matthieu PAQUIER', org:'ORKESTRA PARTNERS', cabCount:1, linkedin:'https://fr.linkedin.com/in/matthieu-paquier-9b45a43', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c175', name:'Vincent PAQUIER', org:'GIRARD ASSURANCE CONSEIL (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/vincent-paquier-7b7931', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c176', name:'Aline PEREZ', org:'PASSION FINANCES', cabCount:1, linkedin:'https://www.linkedin.com/in/aperezcgp/', confiance:'Elevee', conn:['damien'], orgs:['cncgp'] },
-  { id:'c177', name:'Séverine PIOT-DEVAL', org:'TANIT', cabCount:1, linkedin:'https://fr.linkedin.com/in/severine-piot-deval', confiance:'Moyenne', conn:['pierre'], orgs:['cncgp'] },
-  { id:'c178', name:'Michael Pachter', org:'MHP FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/michael-pachter-35850040/', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
-  { id:'c179', name:'Laurent Maurice Peney', org:'SAS ALTIVIA MEA', cabCount:1, linkedin:'https://fr.linkedin.com/in/laurent-peney-150a6910', confiance:'Elevee', conn:['damien'], orgs:['anacofi'] },
-  { id:'c180', name:'Nicolas Peycru', org:'EUODIA COURTAGE (+1 cabinets)', cabCount:2, linkedin:'https://linkedin.com/in/nicolaspeycru?ppe=1', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c181', name:'Joël PÉRIÉ', org:'PERPETUO CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/jo%C3%ABl-p%C3%A9ri%C3%A9-5a2a6616', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c182', name:'Vincent RENARD', org:'VITALEPARGNE', cabCount:1, linkedin:'https://fr.linkedin.com/in/vincent-renard-51871b17b', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c183', name:'Alexis RENARD', org:'EPRIM PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/alexis-renard-45b353164/', confiance:'Moyenne', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c184', name:'Romain RENAULT', org:'RENAULT GESTION PRIVEE', cabCount:1, linkedin:'https://www.linkedin.com/in/romainrenault/', confiance:'Moyenne', conn:['damien'], orgs:['cncgp'] },
-  { id:'c185', name:'Cyrille RESTIER', org:'STRATEGINVEST', cabCount:1, linkedin:'https://fr.linkedin.com/in/cyrille-restier-6100aa23', confiance:'Moyenne', conn:['damien'], orgs:['cncgp'] },
-  { id:'c186', name:'Yoann RICHARD', org:'EURASSUR (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/yoannrichard/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c187', name:'Olivier RIEU', org:'KIMPA', cabCount:1, linkedin:'https://www.linkedin.com/in/olivierrieu/', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
-  { id:'c188', name:'Eric ROBBE', org:'LAFFITTE GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/eric-robbe-b311b86', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c189', name:'Jean-Frédéric ROUXEL', org:'ASCALON FINANCES', cabCount:1, linkedin:'https://fr.linkedin.com/in/jean-fr%C3%A9d%C3%A9ric-rouxel-gestion-patrimoine-expert-fiscalit%C3%A9', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c190', name:'Fabien RYCROFT', org:'VITALEPARGNE (+4 cabinets)', cabCount:5, linkedin:'https://fr.linkedin.com/in/fabien-rycroft', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c191', name:'Yann Robbiola', org:'LS ADVISORS', cabCount:1, linkedin:'https://fr.linkedin.com/in/yann-robbiola-%E2%9C%85-4a64101', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
-  { id:'c192', name:'Sebastien Rouzaire', org:'KERIUS FINANCE', cabCount:1, linkedin:'https://ch.linkedin.com/in/srouzaire', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c193', name:'Stéphane Rudzinski', org:'COULEUR CAPITAL (+7 cabinets)', cabCount:8, linkedin:'https://fr.linkedin.com/in/st%C3%A9phane-rudzinski-983a60a', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c194', name:'Jérôme Rusak', org:'JEDDAK', cabCount:1, linkedin:'https://fr.linkedin.com/in/j%C3%A9r%C3%B4me-rusak', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c195', name:'Charles Ruven', org:'RUVEN OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ruven-charles', confiance:'Elevee', conn:['sahira'], orgs:['anacofi'] },
-  { id:'c196', name:'Mathieu SANLAVILLE', org:'NORMA CONSEILS', cabCount:1, linkedin:'https://fr.linkedin.com/in/mathieu-sanlaville-3556122a', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
-  { id:'c197', name:'JOHANN SCHWIMANN', org:'SEVEN CAPITAL MANAGEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/johann-schwimann-1948406', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c198', name:'Julien SEBA', org:'MILLENIANCE (AVENIR EPARGNE) (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/julien-seba', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
-  { id:'c199', name:'Guillaume SEREAUD', org:'ALIQUIS GRAND EST (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/guillaume-sereaud-16805522', confiance:'Elevee', conn:['olric'], orgs:['anacofi','cncgp'] },
-  { id:'c200', name:'Michael SFEZ', org:'KERMONY CAPITAL (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/msfez/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c201', name:'François-Xavier SOEUR', org:'TERRAE PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/soeur-33fx/', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
-  { id:'c202', name:'Nicolas SOST', org:'NIPHICAP', cabCount:1, linkedin:'https://www.linkedin.com/in/nicolas-sost-915bab/', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c203', name:'Nicolas STOCLET', org:'OPALINE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/nicolasstoclet', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c204', name:'Ludovic Sarda', org:'PYTHEAS CAPITAL ADVISORS', cabCount:1, linkedin:'https://fr.linkedin.com/in/ludovicsarda', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c205', name:'Nadim TAKCHI', org:'INNOVATIVE FINANCE - OPENSTONE', cabCount:1, linkedin:'https://www.linkedin.com/in/nadim-takchi-44830430/', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
-  { id:'c206', name:'Bertrand TOURMENTE', org:'ALTHOS PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/bertrand-tourmente-conseil-gestion-fortune', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c207', name:'Patrick Thiberge', org:'HONOVA', cabCount:1, linkedin:'https://fr.linkedin.com/in/patrick-thiberge-6996288', confiance:'Elevee', conn:['sahira'], orgs:['anacofi'] },
-  { id:'c208', name:'Laetitia Marie Yvonne Trabet', org:'T-CONSEIL PATRIMOINE, COLLECTION ET EXPATRIATION', cabCount:1, linkedin:'https://www.linkedin.com/in/laetitiatrabet/', confiance:'Elevee', conn:['damien'], orgs:['anacofi'] },
-  { id:'c209', name:'Stéphane VAN HUFFEL', org:'SVH CONSEILS', cabCount:1, linkedin:'https://fr.linkedin.com/in/stephane-van-huffel-206b171b', confiance:'Moyenne', conn:['sahira'], orgs:['cncgp'] },
-  { id:'c210', name:'Jean-Maximilien VANCAYEZEELE', org:'PCA FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/jean-maximilien-vancayezeele-9a44142/', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
-  { id:'c211', name:'Olivier VASSEUR', org:'LDV PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/oliviervasseur1ficalitegestiondepatrimoinebanquebarclayscitibankmilleisplacementscryptomoneynft/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c212', name:'Fred VIANAS', org:'UFIFRANCE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/fredvianas', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
-  { id:'c213', name:'Bernard WEILL', org:'CENTRE DE CONSEIL EN ASSURANCES ET DE SERVICES AUX ENTREPRISES CECASE (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/bernard-weill-0a865b12', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c214', name:'Pierre-emmanuel Weil', org:'Vault Family Office (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/pierre-emmanuel-weil-084a601', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
-  { id:'c215', name:'Aurélie YIFLACH', org:'SERENITYS PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/aurelie-yiflach-tenenbaum-4b756a16', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
-  { id:'c216', name:'Bruno ZARAYA', org:'TREE FAMILY', cabCount:1, linkedin:'https://fr.linkedin.com/in/bruno-zaraya-511b4b2b', confiance:'Elevee', conn:['damien'], orgs:['cncgp'] },
+  { id:'c10', name:'Baptiste BRUNEAU', org:'CORUM L’EPARGNE', cabCount:1, linkedin:'https://www.linkedin.com/in/baptiste-bruneau-5625b316/', confiance:'', conn:['amelie','olric'], orgs:['cncef'] },
+  { id:'c11', name:'Eugène CONSTANT', org:'AMBRE GESTION DE PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/eugeneconstantgestionpatrimoine/', confiance:'Elevee', conn:['leleu','pierre'], orgs:['cncgp'] },
+  { id:'c12', name:'Yoann Messod Raphael Castiel', org:'CASTIEL & ASSOCIES', cabCount:1, linkedin:'https://fr.linkedin.com/in/yoann-castiel-3925047', confiance:'Elevee', conn:['damien','olric'], orgs:['anacofi'] },
+  { id:'c13', name:'Antoine DELON', org:'IRBIS SOLUTIONS (+2 cabinets)', cabCount:3, linkedin:'https://fr.linkedin.com/in/antoine-delon-5aa5838', confiance:'Elevee', conn:['amelie','leleu'], orgs:['cncgp'] },
+  { id:'c14', name:'Johan DIDOUCHE', org:'J.A.M CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/johandidouche/', confiance:'Moyenne', conn:['leleu','olric'], orgs:['cncgp'] },
+  { id:'c15', name:'Virginie DUFFOUR', org:'BEELONG FAMILY OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/virginie-duffour-2ab1a32', confiance:'Elevee', conn:['amelie','leleu'], orgs:['cncgp'] },
+  { id:'c16', name:'Bruno Dominguez', org:'FORTUNIAL', cabCount:1, linkedin:'https://fr.linkedin.com/in/bruno-dominguez-510a8970', confiance:'Elevee', conn:['damien','sahira'], orgs:['anacofi'] },
+  { id:'c17', name:'Sandrine GENET', org:'CARAT CAPITAL', cabCount:1, linkedin:'https://fr.linkedin.com/in/sandrine-genet', confiance:'Elevee', conn:['leleu','pierre'], orgs:['cncgp'] },
+  { id:'c18', name:'Enzo Hallot', org:'FINANCIERE HODL', cabCount:1, linkedin:'https://fr.linkedin.com/in/enzo-hallot', confiance:'Elevee', conn:['olric','sahira'], orgs:['anacofi'] },
+  { id:'c19', name:'Sebastien Janin', org:'LINKS', cabCount:1, linkedin:'https://fr.linkedin.com/in/sebastienjanin', confiance:'Moyenne', conn:['damien','olric'], orgs:['anacofi'] },
+  { id:'c20', name:'Ahmed Khelifa', org:'L\'ALLOCATAIRE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ahmedkhelifa', confiance:'Elevee', conn:['pierre','sahira'], orgs:['anacofi'] },
+  { id:'c21', name:'Simon LOLMEDE', org:'ORIGAMI 31', cabCount:1, linkedin:'https://fr.linkedin.com/in/simonlolmede', confiance:'Elevee', conn:['amelie','sahira'], orgs:['cncgp'] },
+  { id:'c22', name:'Fabrice Lagreou', org:'H TAX PLANNERS', cabCount:1, linkedin:'https://www.linkedin.com/in/fabricelagreou/', confiance:'Elevee', conn:['leleu','pierre'], orgs:['anacofi'] },
+  { id:'c23', name:'Régis MEYER', org:'FAMILY GESTION PRIVEE (+2 cabinets)', cabCount:3, linkedin:'https://fr.linkedin.com/in/regis-meyer', confiance:'Elevee', conn:['amelie','leleu'], orgs:['cncgp'] },
+  { id:'c24', name:'Stephane Molere', org:'ETHIQUE ET PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/stephane-molere/', confiance:'Moyenne', conn:['olric','sahira'], orgs:['anacofi'] },
+  { id:'c25', name:'Emmanuel NARRAT', org:'HAUSSMANN PATRIMOINE (+3 cabinets)', cabCount:4, linkedin:'https://fr.linkedin.com/in/emmanuel-narrat-7033a61', confiance:'Elevee', conn:['leleu','olric'], orgs:['cncgp'] },
+  { id:'c26', name:'Marianne NAVARRE', org:'MARIANNE NAVARRE CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/marianne-navarre-2561a32/', confiance:'Elevee', conn:['leleu','pierre'], orgs:['cncgp'] },
+  { id:'c27', name:'Nicolas ONEN', org:'H360 CONSEILS', cabCount:1, linkedin:'https://www.linkedin.com/in/onennicolas/', confiance:'Elevee', conn:['leleu','sahira'], orgs:['cncgp'] },
+  { id:'c28', name:'Olric Ournac', org:'B.O.O GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/olric-ournac-b043ba60', confiance:'Elevee', conn:['damien','sahira'], orgs:['anacofi'] },
+  { id:'c29', name:'Arnaud PERRIER', org:'INKIPIT FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/arnaud-perrier-3086533/', confiance:'Elevee', conn:['leleu','pierre'], orgs:['cncgp'] },
+  { id:'c30', name:'Benoit Jean Alexandre Petit', org:'INTER INVEST PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/benoitpetit1', confiance:'Elevee', conn:['leleu','pierre'], orgs:['anacofi'] },
+  { id:'c31', name:'Nicolas Gregoire Alexandre Pilikian', org:'LIFT', cabCount:1, linkedin:'https://fr.linkedin.com/in/nicolaspilikian', confiance:'Elevee', conn:['leleu','pierre'], orgs:['anacofi'] },
+  { id:'c32', name:'JOHANN SCHWIMANN', org:'SEVEN CAPITAL MANAGEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/johann-schwimann-1948406', confiance:'Elevee', conn:['leleu','sahira'], orgs:['cncgp'] },
+  { id:'c33', name:'Stephane Schaepelynck', org:'SCAP CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/stephane-schaepelynck-3760b620', confiance:'Elevee', conn:['leleu','sahira'], orgs:['anacofi'] },
+  { id:'c34', name:'Michel Raphaël Szecowka', org:'AMm fo', cabCount:1, linkedin:'https://www.linkedin.com/in/michel-szecowka/', confiance:'Moyenne', conn:['leleu','pierre'], orgs:['anacofi'] },
+  { id:'c35', name:'Jean-Luc ABERT', org:'A.I.C. PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/jean-luc-abert-9a913618', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c36', name:'Maxime ALIMI', org:'EQUINOXE GP (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/maxime-alimi-0412537', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c37', name:'Ruben AOUIZERATE', org:'BEYOND WEALTH', cabCount:1, linkedin:'https://fr.linkedin.com/in/ruben-aouizerate-58117319', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c38', name:'Johann AUBERT', org:'H\'ARPE CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/johann-aubert-ba687b110', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
+  { id:'c39', name:'Marc AUCHABIE', org:'NOVAM', cabCount:1, linkedin:'https://fr.linkedin.com/in/marcauchabie', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c40', name:'Marc Amiel', org:'AFFILIOR GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/marcamiel', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c41', name:'Veronique Aubin', org:'XELIS FAMILY OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/veronique-aubin-36887619?trk=public_post_reshare-text', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c42', name:'Guillaume BACHY', org:'TRIUM ASSOCIÉS', cabCount:1, linkedin:'https://fr.linkedin.com/in/guillaume-bachy', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
+  { id:'c43', name:'Pascal BADIER', org:'MILESTONE (+2 cabinets)', cabCount:3, linkedin:'https://www.linkedin.com/in/pascalbadier/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c44', name:'Thomas BALLOT', org:'NOE CAPITAL', cabCount:1, linkedin:'https://www.linkedin.com/in/thomas-ballot-2270b02/', confiance:'', conn:['pierre'], orgs:['cncef'] },
+  { id:'c45', name:'Florent BARBIER', org:'PATRIMOINE PIERRE ET FINANCES', cabCount:1, linkedin:'https://www.linkedin.com/in/florent-barbier-20140016/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c46', name:'Dimitri BARCELONE', org:'KANOPE', cabCount:1, linkedin:'https://fr.linkedin.com/in/dimitri-barcelone-4a3a9012', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c47', name:'Gilles BELLOIR', org:'SAS PLACEMENT DIRECT', cabCount:1, linkedin:'https://fr.linkedin.com/in/gilles-belloir-12a2471', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c48', name:'Edouard BINET', org:'PEETERS PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/edouardbinet/', confiance:'Elevee', conn:['damien'], orgs:['cncgp'] },
+  { id:'c49', name:'Mickael BOBIN', org:'ALUNI PATRIMOINE (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/mickael-bobin', confiance:'', conn:['olric'], orgs:['cncef'] },
+  { id:'c50', name:'Franck BONIN', org:'OSEIS GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/franck-bonin-4a998040', confiance:'Moyenne', conn:['olric'], orgs:['cncgp'] },
+  { id:'c51', name:'Mario BOSSETTI', org:'TAORMINA CAPITAL', cabCount:1, linkedin:'https://fr.linkedin.com/in/mario-bossetti-12715017', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c52', name:'Jean-Baptiste BRETTE', org:'ONLY 2F (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/jean-baptiste-brette-5559b910', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c53', name:'Baptiste BRUNEAU', org:'CORUM L’EPARGNE', cabCount:1, linkedin:'https://www.linkedin.com/in/baptiste-bruneau-5625b316/', confiance:'', conn:['amelie'], orgs:['cncef'] },
+  { id:'c54', name:'Paul BUZY', org:'FAP-INVEST', cabCount:1, linkedin:'https://www.linkedin.com/in/paul-buzy-62564a130/', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
+  { id:'c55', name:'Samuel Barnier', org:'GAIA CONSEIL ET PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/samuel-barnier-37224219', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c56', name:'Nicolas Bazinet', org:'BienPlacer.fr', cabCount:1, linkedin:'https://fr.linkedin.com/in/bazinetnicolas', confiance:'Elevee', conn:['pierre'], orgs:['anacofi'] },
+  { id:'c57', name:'Laurent Simon Bellaiche', org:'ARGOS INVEST', cabCount:1, linkedin:'https://fr.linkedin.com/in/laurentbellaiche', confiance:'Moyenne', conn:['damien'], orgs:['anacofi'] },
+  { id:'c58', name:'Rodolphe Bereby', org:'WAGRAM PARTNERS', cabCount:1, linkedin:'https://fr.linkedin.com/in/rodolphebereby', confiance:'Elevee', conn:['pierre'], orgs:['anacofi'] },
+  { id:'c59', name:'Bruno Bernard', org:'UCP CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/bruno-bernard-', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c60', name:'Alexis Jacques Bied', org:'SANALA PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/alexis-bied-sanala', confiance:'Elevee', conn:['damien'], orgs:['anacofi'] },
+  { id:'c61', name:'Fabien Bismuth', org:'FINANCIÈRE MEESCHAERT', cabCount:1, linkedin:'https://fr.linkedin.com/in/fabien-bismuth-a886502', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c62', name:'Alexandre Boissarie', org:'ALTHEO PARTNERS', cabCount:1, linkedin:'https://be.linkedin.com/in/alexandre-boissarie-1470409', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c63', name:'Yannick Gilles Bouet', org:'YB CONSEILS', cabCount:1, linkedin:'https://fr.linkedin.com/in/yannick-bouet-b912761a', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c64', name:'Yannick Georges Bruneau', org:'CAP PATRIMONIAL', cabCount:1, linkedin:'https://fr.linkedin.com/in/yannick-bruneau-4557444/fr', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c65', name:'Fabien CABEZON', org:'FABIEN CABEZON - HGP', cabCount:1, linkedin:'https://fr.linkedin.com/in/fabien-cabezon-96a6a613', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c66', name:'ANTHONY CALCI', org:'CALCI ANTHONY (CALCI PATRIMOINE)', cabCount:1, linkedin:'https://fr.linkedin.com/in/anthonycalci', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c67', name:'Maxime CAMUS', org:'GRISBEE GESTION PRIVEE (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/maxime-camus-58a7541/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c68', name:'Maelle CARAVACA', org:'EN PRIVE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ma%C3%ABlle-caravaca-a5164028', confiance:'Moyenne', conn:['sahira'], orgs:['cncgp'] },
+  { id:'c69', name:'Maelle CARAVACA', org:'EN PRIVE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ma%C3%ABlle-caravaca-a5164028', confiance:'Moyenne', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c70', name:'Stéphane CARLUCCI', org:'KEVANO PATRIMOINE (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/stephane-carlucci-7a683015', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c71', name:'Philippe CAZADIEU', org:'PARIS PRIVATE FINANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/philippe-cazadieu-00626515', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c72', name:'Marion CHAPEL-MASSOT', org:'DECARION OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/marion-chapel-massot', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c73', name:'Emilie CHARBONNEL', org:'ALYTIS GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/emilie-charbonnel-42a822a', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c74', name:'Adeline CHARLES', org:'AKANE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/adeline-charles-akane-patrimoine', confiance:'', conn:['leleu'], orgs:['cncef'] },
+  { id:'c75', name:'Jean COCHET', org:'CHRONICLES SOLUTIONS', cabCount:1, linkedin:'https://www.linkedin.com/in/jean-cochet-ba22b22a/', confiance:'', conn:['sahira'], orgs:['cncef'] },
+  { id:'c76', name:'Benjamin COHEN', org:'RIVIERA WEALTH MANAGEMENT', cabCount:1, linkedin:'https://www.linkedin.com/in/benjamin-cohen-78091225/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c77', name:'Nicolas COMMEROT', org:'ALTITUDE INVESTMENTS SOLUTIONS', cabCount:1, linkedin:'https://fr.linkedin.com/in/nicolas-commerot', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
+  { id:'c78', name:'Yves CONAN', org:'IRBIS SOLUTIONS', cabCount:1, linkedin:'https://fr.linkedin.com/in/yves-conan-8476591', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
+  { id:'c79', name:'Fabrice CORBA', org:'SELEXIUM EPARGNE ET PREVOYANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/fcorba/', confiance:'', conn:['sahira'], orgs:['cncef'] },
+  { id:'c80', name:'Jean-Manuel COSTA', org:'ADELIE ADVISORS', cabCount:1, linkedin:'https://www.linkedin.com/in/jean-manuel-costa-37844/', confiance:'', conn:['pierre'], orgs:['cncef'] },
+  { id:'c81', name:'Charles COULOMBAN', org:'B-INVESTISSEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/charles-coulomban-aa7441a', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c82', name:'Thierry CREUX', org:'B-INVESTISSEMENT (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/thierry-creux-2918971a/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c83', name:'Anthony CROS', org:'CROS INVESTING', cabCount:1, linkedin:'https://www.linkedin.com/in/anthonycros/', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c84', name:'Anne-Aurore CUZOL', org:'INNOLIANCE CONSEIL & PATRIMOINE (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/aacuzol/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c85', name:'Remi Canova', org:'ALGOW', cabCount:1, linkedin:'https://fr.linkedin.com/in/r%C3%A9mi-canova-36157a1', confiance:'Moyenne', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c86', name:'Jean-pierre Champin', org:'PATRIMOINE PRIVE', cabCount:1, linkedin:'https://www.linkedin.com/in/jean-pierre-champin-a8433111/', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c87', name:'Joseph Choueifaty', org:'GOODVEST', cabCount:1, linkedin:'https://fr.linkedin.com/in/josephchoueifaty', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
+  { id:'c88', name:'Ronan Edouard Michel Colas', org:'RC WEALTH', cabCount:1, linkedin:'https://fr.linkedin.com/in/ronan-colas', confiance:'Elevee', conn:['sahira'], orgs:['anacofi'] },
+  { id:'c89', name:'Thibault DE LA SELLE', org:'ALTI CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/thibault-de-la-selle-b9a9b911/', confiance:'', conn:['leleu'], orgs:['cncef'] },
+  { id:'c90', name:'Jean-yves DE Louvigny', org:'FAMILITY', cabCount:1, linkedin:'https://www.linkedin.com/in/jean-yves-de-louvigny-79a88519/', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c91', name:'Alexandre DE SAGAZAN', org:'ARGUIN CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/alexandre-de-sagazan-2bb9012', confiance:'Moyenne', conn:['pierre'], orgs:['cncgp'] },
+  { id:'c92', name:'Rachel DE VALICOURT', org:'LINARD CHARBONNEL (+3 cabinets)', cabCount:4, linkedin:'https://fr.linkedin.com/in/rachel-de-valicourt', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
+  { id:'c93', name:'Christian DE Witt', org:'DWT FAMILY OFFICE', cabCount:1, linkedin:'https://www.linkedin.com/in/christiandewitt/', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
+  { id:'c94', name:'GAUTIER DELABROUSSE-MAYOUX', org:'IROKO', cabCount:1, linkedin:'https://fr.linkedin.com/in/gautier-delabrousse-mayoux-73986717', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c95', name:'Gregory DELMAS', org:'EURO PATRIMOINE INVESTISSEMENT', cabCount:1, linkedin:'https://www.linkedin.com/in/gregory-delmas-76242815/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c96', name:'Nicolas DEMYTTENAERE', org:'KINO GESTION PRIVÉE (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/nicolas-demyttenaere-3570866', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c97', name:'Caroline DERYCKE', org:'SERENA CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/caroline-derycke-serena-conseil/', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
+  { id:'c98', name:'Tathy DIALLO', org:'PCA FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/tathy-diallo-b31733143', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
+  { id:'c99', name:'Dominique DIMIER', org:'CAE CONTACT ASSISTANCE ENTREPRISE (+2 cabinets)', cabCount:3, linkedin:'https://www.linkedin.com/in/dominique-dimier/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c100', name:'Pierre DOIZE', org:'INCEPTIM SAS', cabCount:1, linkedin:'https://www.linkedin.com/in/pierre-doize-b3456a1a/', confiance:'', conn:['leleu'], orgs:['cncef'] },
+  { id:'c101', name:'Julien DUPONT', org:'DUPONT CONSEIL GESTION ET ASSOCIES SARL', cabCount:1, linkedin:'https://fr.linkedin.com/in/julien-dupont-032305107', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c102', name:'Julien DUPONT', org:'DUPONT CONSEIL GESTION ET ASSOCIES SARL', cabCount:1, linkedin:'https://fr.linkedin.com/in/julien-dupont-032305107', confiance:'Moyenne', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c103', name:'Benjamin DURAND', org:'B DURAND CAPITAL PARTNERS (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/benjamin-durand', confiance:'Moyenne', conn:['leleu'], orgs:['cncef','cncgp'] },
+  { id:'c104', name:'Maxime DURAND', org:'AGAPE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/maxime-durand-agape-patrimoine', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c105', name:'Julien DUSSAUSSAY', org:'REFERENCE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/julien-dussaussay-8852633', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c106', name:'Nicolas Decaudain', org:'PROSPER CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/nicolasdecaudain', confiance:'Elevee', conn:['amelie'], orgs:['anacofi'] },
+  { id:'c107', name:'Bernard Delattre', org:'ALTIMEO PARTICIPATIONS', cabCount:1, linkedin:'https://fr.linkedin.com/in/bernard-delattre-4835719a', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c108', name:'Lan Descolonges', org:'KACIUS', cabCount:1, linkedin:'https://www.linkedin.com/in/l%C3%A2n-descolonges-5828ba19/', confiance:'Moyenne', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c109', name:'Jonathan Dhiver', org:'MEILLEURESCPI.COM', cabCount:1, linkedin:'https://fr.linkedin.com/in/jonathandhiver', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c110', name:'John ELALOUF', org:'MONALIZA', cabCount:1, linkedin:'https://fr.linkedin.com/in/john-elalouf-6124a84', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
+  { id:'c111', name:'Romain ELMOSNINO', org:'VESTED GESTION PRIVEE (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/romain-elmosnino', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c112', name:'Mahéva EVEILLARD', org:'INNOVA GESTION', cabCount:1, linkedin:'https://www.linkedin.com/in/mah%C3%A9va-eveillard/', confiance:'', conn:['damien'], orgs:['cncef'] },
+  { id:'c113', name:'GUILLAUME EYSSETTE', org:'GEFINEO', cabCount:1, linkedin:'https://fr.linkedin.com/in/guillaume-eyssette-0b1314', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c114', name:'Sabri FAKROUNE', org:'KELONYA', cabCount:1, linkedin:'https://fr.linkedin.com/in/sabri-fakroune-13887a25', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c115', name:'Guillaume FALLER', org:'GF PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/guillaume-faller-8905552', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
+  { id:'c116', name:'Ludovic FARNAULT', org:'MEYON ULTIM PARIS', cabCount:1, linkedin:'https://fr.linkedin.com/in/ludovic-farnault-44846613', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c117', name:'David FERRIER', org:'FERRIER CONSEILS & PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/davidferrier/', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c118', name:'Charlotte FLINOIS', org:'LBI PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/charlotte-flinois-759b822/en', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
+  { id:'c119', name:'Benjamin FLOTTES DE POUZOLS', org:'WENIMMO', cabCount:1, linkedin:'https://fr.linkedin.com/in/benjamin-flottes-de-pouzols-4aa31417', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c120', name:'Benjamin FLOTTES DE POUZOLS', org:'WENIMMO', cabCount:1, linkedin:'https://fr.linkedin.com/in/benjamin-flottes-de-pouzols-4aa31417', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c121', name:'Patrick FONTAN', org:'SELECT’PLACEMENTS', cabCount:1, linkedin:'https://www.linkedin.com/in/patrick-fontan-92228b13/', confiance:'', conn:['leleu'], orgs:['cncef'] },
+  { id:'c122', name:'Cyril Michel Franco', org:'MALOAN FINANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/cyril-franco-71972bb0', confiance:'Elevee', conn:['damien'], orgs:['anacofi'] },
+  { id:'c123', name:'Antoine Freysz', org:'KERALA VENTURES', cabCount:1, linkedin:'https://fr.linkedin.com/in/antoinefreysz', confiance:'Elevee', conn:['pierre'], orgs:['anacofi'] },
+  { id:'c124', name:'Loïc GACH', org:'OUTMATCH INVEST', cabCount:1, linkedin:'https://www.linkedin.com/in/lo%C3%AFc-gach-76662a23/', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
+  { id:'c125', name:'Patrick GANANSIA', org:'CYRUS HEREZ', cabCount:1, linkedin:'https://fr.linkedin.com/in/patrick-ganansia-82565824', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c126', name:'Cédric GENET', org:'CARAT CAPITAL (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/c%C3%A9dric-genet-934151a9', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c127', name:'Jean-Christian GEY', org:'MONSIEURGEY', cabCount:1, linkedin:'https://fr.linkedin.com/in/jean-christian-gey-a6760a129', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
+  { id:'c128', name:'Brice GIMENO', org:'QUADRATIS', cabCount:1, linkedin:'https://fr.linkedin.com/in/brice-gimeno', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
+  { id:'c129', name:'Xavier GIRARD', org:'CENTRE DU PATRIMOINE XG', cabCount:1, linkedin:'https://fr.linkedin.com/in/xavier-girard-126aa8114', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c130', name:'Joël GIROD', org:'BERGER ET ASSOCIES', cabCount:1, linkedin:'https://fr.linkedin.com/in/jo%C3%ABl-girod-53644a20', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
+  { id:'c131', name:'Hubert GIRONDEL', org:'INITIAL FAMILY OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/hubert-girondel-63272155', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
+  { id:'c132', name:'Jérôme GLODAS', org:'ZALPHA (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/jerome-glodas-9a83212a', confiance:'Elevee', conn:['damien'], orgs:['anacofi','cncgp'] },
+  { id:'c133', name:'Amaury GOSSÉ', org:'LA MUETTE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/amaury-goss%C3%A9-56753b1', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
+  { id:'c134', name:'Philippe GOURDELIER', org:'NIPHICAP', cabCount:1, linkedin:'https://fr.linkedin.com/in/philippe-gourdelier-9a6a9a5', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c135', name:'Olivier GRENON-ANDRIEU', org:'EQUANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/grenon-andrieu-olivier', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c136', name:'Caroline GRINDA-KALBACHER', org:'KYOSEIL AM', cabCount:1, linkedin:'https://fr.linkedin.com/in/caroline-grinda-kalbacher-0a991519', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c137', name:'David Guyot', org:'PANDAT FINANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/david-guyot-43174a6', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c138', name:'Samuel HADDAD', org:'OPTIMIUM FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/samuel-haddad-5843653/', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c139', name:'Jean-Baptiste HOLTZ', org:'WEALTH CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/jbholtz/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c140', name:'Serge Harroch', org:'ALPHA PHI', cabCount:1, linkedin:'https://fr.linkedin.com/in/serge-harroch-alpha-phi-274aaa15', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
+  { id:'c141', name:'Serge Harroch', org:'ALPHA PHI', cabCount:1, linkedin:'https://fr.linkedin.com/in/serge-harroch-alpha-phi-274aaa15', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c142', name:'Richard Henri Houbron', org:'EXPERTS EN PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/richardhoubron/', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c143', name:'Nicolas Hubert', org:'ROCHEBONNE FINANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/nicolas-hubert-5135a95', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c144', name:'Guillaume Hublot', org:'KMH GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/guillaume-hublot-193a7632', confiance:'Elevee', conn:['amelie'], orgs:['anacofi'] },
+  { id:'c145', name:'Philippe Isnard', org:'AELLA CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/philippe-isnard-6ab7442', confiance:'Elevee', conn:['pierre'], orgs:['anacofi'] },
+  { id:'c146', name:'Patrick JANEL', org:'ALETIA', cabCount:1, linkedin:'https://fr.linkedin.com/in/patrick-janel-1450973', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c147', name:'Romain JOUDELAT', org:'ROCHEVELLE GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/romain-joudelat-96535832', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c148', name:'Mathieu Aurelien Juchet', org:'ALTUREA INVESTISSEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/mathieu-juchet', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
+  { id:'c149', name:'Christophe KAH', org:'EURO PATRIMOINE INVESTISSEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/christophe-kah-b035391', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c150', name:'Aurélie KHALDI', org:'CULTURE PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/aur%C3%A9lie-khaldi/', confiance:'', conn:['amelie'], orgs:['cncef'] },
+  { id:'c151', name:'Jonathan KIEFFER', org:'JOLKA INVEST', cabCount:1, linkedin:'https://www.linkedin.com/in/jonathan-kieffer-caia-4394384/', confiance:'', conn:['pierre'], orgs:['cncef'] },
+  { id:'c152', name:'Mounir LAGGOUNE', org:'FINARY', cabCount:1, linkedin:'https://fr.linkedin.com/in/mounirlaggoune', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
+  { id:'c153', name:'Marc LAMBERT', org:'ETERSO', cabCount:1, linkedin:'https://fr.linkedin.com/in/marc-lambert-8768994', confiance:'', conn:['amelie'], orgs:['cncef'] },
+  { id:'c154', name:'Didier LAPORTE', org:'A.T.P.E', cabCount:1, linkedin:'https://fr.linkedin.com/in/didier-laporte-823ba817', confiance:'', conn:['leleu'], orgs:['cncef'] },
+  { id:'c155', name:'Vincent LAUWICK', org:'KAPEL', cabCount:1, linkedin:'https://www.linkedin.com/in/vincent-lauwick/', confiance:'', conn:['leleu'], orgs:['cncef'] },
+  { id:'c156', name:'Yann LE HER', org:'23IS', cabCount:1, linkedin:'https://fr.linkedin.com/in/yann-le-her-21569a13', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
+  { id:'c157', name:'Sylvain LEFEVRE', org:'SYLVAIN LEFEVRE FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/lef%C3%A8vre-sylvain-a363602a2/', confiance:'Moyenne', conn:['damien'], orgs:['cncgp'] },
+  { id:'c158', name:'Jérémy LELLOUCHE', org:'PERENITIS', cabCount:1, linkedin:'https://www.linkedin.com/in/jeremylellouche/', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c159', name:'FRANCOIS LELONG', org:'LELONG FRANCOIS', cabCount:1, linkedin:'https://fr.linkedin.com/in/francois-lelong-5a542254', confiance:'Elevee', conn:['amelie'], orgs:['anacofi'] },
+  { id:'c160', name:'Sabine LENAERTS', org:'VERTIGO BY ID', cabCount:1, linkedin:'https://fr.linkedin.com/in/sabinelenaerts', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c161', name:'François-Xavier LENIER', org:'FACTEUR 7', cabCount:1, linkedin:'https://www.linkedin.com/in/fxl%C3%A9nier/', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c162', name:'Alexandre LEROY', org:'MFP CONSEIL ET IMMOBILIER', cabCount:1, linkedin:'https://www.linkedin.com/in/alexandre-olivier-leroy-b4929618/', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c163', name:'Adrien LHERMITTE', org:'LINAVEST', cabCount:1, linkedin:'https://fr.linkedin.com/in/adrien-lhermitte', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c164', name:'Caroline LIM', org:'SERENDIP PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/carolinelim-serendippatrimoine', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c165', name:'Aurélia LOVADINA', org:'CLEOS GESTION PRIVÉE', cabCount:1, linkedin:'https://fr.linkedin.com/in/aur%C3%A9lia-lovadina-cfa-9a964124', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
+  { id:'c166', name:'Kevin Le Calvez', org:'LES HERMINES GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/kevin-calvez-725b46298', confiance:'Elevee', conn:['damien'], orgs:['anacofi'] },
+  { id:'c167', name:'Franck Gerard Claude Lelong', org:'ARIAX PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/franck-lelong-a4116512', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c168', name:'Guillaume Lucchini', org:'LUCCHINI & PARTNERS (+3 cabinets)', cabCount:4, linkedin:'https://fr.linkedin.com/in/guillaume-lucchini-36ab9596', confiance:'Elevee', conn:['amelie'], orgs:['anacofi'] },
+  { id:'c169', name:'Baptiste MAES', org:'OFILAE LILLE', cabCount:1, linkedin:'https://fr.linkedin.com/in/baptiste-maes-93537314', confiance:'Elevee', conn:['leleu'], orgs:['anacofi','cncgp'] },
+  { id:'c170', name:'Ninon MANARANCHE-MICHEL', org:'AMANTHEE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ninonmanaranchemichel', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c171', name:'Matthieu MANCUSO', org:'EGEO CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/matthieu-mancuso', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
+  { id:'c172', name:'Pascal MARTIN', org:'GENERATION ET PATRIMOINE (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/pascal-martin-b0b59a17/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c173', name:'François MARTINEAU', org:'LEF CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/in/fran%C3%A7ois-martineau/', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c174', name:'VINCENT MARTINS', org:'MARTINS VINCENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/vincent-martins-61b79632a', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c175', name:'Henry MASDEVALL', org:'VALOREY FINANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/henry-masdevall-15b1bb19', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c176', name:'Philippe MATTER', org:'ALTERNATIVE PATRIMONIALE', cabCount:1, linkedin:'https://www.linkedin.com/in/philippematter/', confiance:'Elevee', conn:['damien'], orgs:['cncgp'] },
+  { id:'c177', name:'Olivier MAURO', org:'ACTEA PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/olivier-mauro-318b781', confiance:'Moyenne', conn:['pierre'], orgs:['cncgp'] },
+  { id:'c178', name:'François MAZET', org:'MV PARTENAIRES', cabCount:1, linkedin:'https://www.linkedin.com/in/fran%C3%A7ois-mazet-33549b16/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c179', name:'Ethel MOLINA', org:'MA GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ethel-molina-86778525', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
+  { id:'c180', name:'Franck Magne', org:'EAVEST', cabCount:1, linkedin:'https://fr.linkedin.com/in/franck-magne-13b9b64', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c181', name:'Harry Martin', org:'ARTHA GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/harrymartinnoaro', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c182', name:'Florian Mazard', org:'THALEA CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/florian-mazard', confiance:'Elevee', conn:['sahira'], orgs:['anacofi'] },
+  { id:'c183', name:'Vincent Daniel Meilhac', org:'VGM CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/vincent-meilhac-8a889557', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
+  { id:'c184', name:'Alexis Molines', org:'AML FINANCE', cabCount:1, linkedin:'https://fr.linkedin.com/in/alexis-molines-87a4b088', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
+  { id:'c185', name:'Franck Morel', org:'SURPERFORMANCE SAS', cabCount:1, linkedin:'https://fr.linkedin.com/in/franck-morel-b9aa137', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c186', name:'Laetitia NGOMA', org:'DIAMOND COMPAGNIE', cabCount:1, linkedin:'https://fr.linkedin.com/in/laetitia-ngoma', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
+  { id:'c187', name:'Quentin Nansot', org:'LE NOUVEAU PLACEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/quentin-nansot-5a598710', confiance:'Elevee', conn:['damien'], orgs:['anacofi'] },
+  { id:'c188', name:'Erwan Nicolas', org:'VELOURS FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/erwan-nicolas-64b0975b/', confiance:'Elevee', conn:['damien'], orgs:['anacofi'] },
+  { id:'c189', name:'Jérémy ORFEO', org:'WEELIM', cabCount:1, linkedin:'https://www.linkedin.com/in/jorfeo/', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c190', name:'Valentin PAPET', org:'BEAUVOISINE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/valentin-papet', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
+  { id:'c191', name:'Matthieu PAQUIER', org:'ORKESTRA PARTNERS', cabCount:1, linkedin:'https://fr.linkedin.com/in/matthieu-paquier-9b45a43', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c192', name:'Vincent PAQUIER', org:'GIRARD ASSURANCE CONSEIL (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/vincent-paquier-7b7931', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c193', name:'Jean-Marc PATOUILLAUD', org:'CS VENTURE PARTNERS', cabCount:1, linkedin:'https://fr.linkedin.com/in/jpatouillaud', confiance:'', conn:['pierre'], orgs:['cncef'] },
+  { id:'c194', name:'Aline PEREZ', org:'PASSION FINANCES', cabCount:1, linkedin:'https://www.linkedin.com/in/aperezcgp/', confiance:'Elevee', conn:['damien'], orgs:['cncgp'] },
+  { id:'c195', name:'Séverine PIOT-DEVAL', org:'TANIT', cabCount:1, linkedin:'https://fr.linkedin.com/in/severine-piot-deval', confiance:'Moyenne', conn:['pierre'], orgs:['cncgp'] },
+  { id:'c196', name:'Michael Pachter', org:'MHP FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/michael-pachter-35850040/', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
+  { id:'c197', name:'Laurent Maurice Peney', org:'SAS ALTIVIA MEA', cabCount:1, linkedin:'https://fr.linkedin.com/in/laurent-peney-150a6910', confiance:'Elevee', conn:['damien'], orgs:['anacofi'] },
+  { id:'c198', name:'Nicolas Peycru', org:'EUODIA COURTAGE (+1 cabinets)', cabCount:2, linkedin:'https://linkedin.com/in/nicolaspeycru?ppe=1', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c199', name:'Joël PÉRIÉ', org:'PERPETUO CONSEIL', cabCount:1, linkedin:'https://fr.linkedin.com/in/jo%C3%ABl-p%C3%A9ri%C3%A9-5a2a6616', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c200', name:'Vincent RENARD', org:'VITALEPARGNE', cabCount:1, linkedin:'https://fr.linkedin.com/in/vincent-renard-51871b17b', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c201', name:'Alexis RENARD', org:'EPRIM PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/alexis-renard-45b353164/', confiance:'Moyenne', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c202', name:'Romain RENAULT', org:'RENAULT GESTION PRIVEE', cabCount:1, linkedin:'https://www.linkedin.com/in/romainrenault/', confiance:'Moyenne', conn:['damien'], orgs:['cncgp'] },
+  { id:'c203', name:'Cyrille RESTIER', org:'STRATEGINVEST', cabCount:1, linkedin:'https://fr.linkedin.com/in/cyrille-restier-6100aa23', confiance:'Moyenne', conn:['damien'], orgs:['cncgp'] },
+  { id:'c204', name:'Yoann RICHARD', org:'EURASSUR (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/yoannrichard/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c205', name:'Olivier RIEU', org:'KIMPA', cabCount:1, linkedin:'https://www.linkedin.com/in/olivierrieu/', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
+  { id:'c206', name:'Eric ROBBE', org:'LAFFITTE GESTION PRIVEE', cabCount:1, linkedin:'https://fr.linkedin.com/in/eric-robbe-b311b86', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c207', name:'Paul ROUDIER', org:'PARO CONSEIL', cabCount:1, linkedin:'https://www.linkedin.com/company/paro-conseil', confiance:'', conn:['damien'], orgs:['cncef'] },
+  { id:'c208', name:'Jean-Frédéric ROUXEL', org:'ASCALON FINANCES', cabCount:1, linkedin:'https://fr.linkedin.com/in/jean-fr%C3%A9d%C3%A9ric-rouxel-gestion-patrimoine-expert-fiscalit%C3%A9', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c209', name:'Fabien RYCROFT', org:'VITALEPARGNE (+4 cabinets)', cabCount:5, linkedin:'https://fr.linkedin.com/in/fabien-rycroft', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c210', name:'Yann Robbiola', org:'LS ADVISORS', cabCount:1, linkedin:'https://fr.linkedin.com/in/yann-robbiola-%E2%9C%85-4a64101', confiance:'Elevee', conn:['olric'], orgs:['anacofi'] },
+  { id:'c211', name:'Sebastien Rouzaire', org:'KERIUS FINANCE', cabCount:1, linkedin:'https://ch.linkedin.com/in/srouzaire', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c212', name:'Stéphane Rudzinski', org:'COULEUR CAPITAL (+7 cabinets)', cabCount:8, linkedin:'https://fr.linkedin.com/in/st%C3%A9phane-rudzinski-983a60a', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c213', name:'Jérôme Rusak', org:'JEDDAK', cabCount:1, linkedin:'https://fr.linkedin.com/in/j%C3%A9r%C3%B4me-rusak', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c214', name:'Charles Ruven', org:'RUVEN OFFICE', cabCount:1, linkedin:'https://fr.linkedin.com/in/ruven-charles', confiance:'Elevee', conn:['sahira'], orgs:['anacofi'] },
+  { id:'c215', name:'Pierre SABATIER', org:'PRIMEVIEW', cabCount:1, linkedin:'https://fr.linkedin.com/in/pierre-sabatier-13b6426a', confiance:'', conn:['damien'], orgs:['cncef'] },
+  { id:'c216', name:'Mathieu SANLAVILLE', org:'NORMA CONSEILS', cabCount:1, linkedin:'https://fr.linkedin.com/in/mathieu-sanlaville-3556122a', confiance:'Elevee', conn:['sahira'], orgs:['cncgp'] },
+  { id:'c217', name:'JOHANN SCHWIMANN', org:'SEVEN CAPITAL MANAGEMENT', cabCount:1, linkedin:'https://fr.linkedin.com/in/johann-schwimann-1948406', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c218', name:'Julien SEBA', org:'MILLENIANCE (AVENIR EPARGNE) (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/julien-seba', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
+  { id:'c219', name:'Guillaume SEREAUD', org:'ALIQUIS GRAND EST (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/guillaume-sereaud-16805522', confiance:'Elevee', conn:['olric'], orgs:['anacofi','cncgp'] },
+  { id:'c220', name:'Michael SFEZ', org:'KERMONY CAPITAL (+1 cabinets)', cabCount:2, linkedin:'https://www.linkedin.com/in/msfez/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c221', name:'Charles SIRYANI', org:'SIRYANI CHARLES', cabCount:1, linkedin:'https://www.linkedin.com/in/charles-siryani/', confiance:'', conn:['pierre'], orgs:['cncef'] },
+  { id:'c222', name:'François-Xavier SOEUR', org:'TERRAE PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/soeur-33fx/', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
+  { id:'c223', name:'Nicolas SOST', org:'NIPHICAP', cabCount:1, linkedin:'https://www.linkedin.com/in/nicolas-sost-915bab/', confiance:'Moyenne', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c224', name:'Nicolas STOCLET', org:'OPALINE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/nicolasstoclet', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c225', name:'Ludovic Sarda', org:'PYTHEAS CAPITAL ADVISORS', cabCount:1, linkedin:'https://fr.linkedin.com/in/ludovicsarda', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c226', name:'Nadim TAKCHI', org:'INNOVATIVE FINANCE - OPENSTONE', cabCount:1, linkedin:'https://www.linkedin.com/in/nadim-takchi-44830430/', confiance:'Elevee', conn:['olric'], orgs:['cncgp'] },
+  { id:'c227', name:'Bertrand TOURMENTE', org:'ALTHOS PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/bertrand-tourmente-conseil-gestion-fortune', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c228', name:'Patrick Thiberge', org:'HONOVA (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/patrick-thiberge-6996288', confiance:'Elevee', conn:['sahira'], orgs:['anacofi','cncef'] },
+  { id:'c229', name:'Laetitia Marie Yvonne Trabet', org:'T-CONSEIL PATRIMOINE, COLLECTION ET EXPATRIATION', cabCount:1, linkedin:'https://www.linkedin.com/in/laetitiatrabet/', confiance:'Elevee', conn:['damien'], orgs:['anacofi'] },
+  { id:'c230', name:'Stéphane VAN HUFFEL', org:'SVH CONSEILS', cabCount:1, linkedin:'https://fr.linkedin.com/in/stephane-van-huffel-206b171b', confiance:'Moyenne', conn:['sahira'], orgs:['cncgp'] },
+  { id:'c231', name:'Jean-Maximilien VANCAYEZEELE', org:'PCA FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/jean-maximilien-vancayezeele-9a44142/', confiance:'Elevee', conn:['amelie'], orgs:['cncgp'] },
+  { id:'c232', name:'Olivier VASSEUR', org:'LDV PATRIMOINE', cabCount:1, linkedin:'https://www.linkedin.com/in/oliviervasseur1ficalitegestiondepatrimoinebanquebarclayscitibankmilleisplacementscryptomoneynft/', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c233', name:'Fred VIANAS', org:'UFIFRANCE PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/fredvianas', confiance:'Elevee', conn:['pierre'], orgs:['cncgp'] },
+  { id:'c234', name:'Bernard WEILL', org:'CENTRE DE CONSEIL EN ASSURANCES ET DE SERVICES AUX ENTREPRISES CECASE (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/bernard-weill-0a865b12', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c235', name:'Pierre-emmanuel Weil', org:'Vault Family Office (+1 cabinets)', cabCount:2, linkedin:'https://fr.linkedin.com/in/pierre-emmanuel-weil-084a601', confiance:'Elevee', conn:['leleu'], orgs:['anacofi'] },
+  { id:'c236', name:'Aurélie YIFLACH', org:'SERENITYS PATRIMOINE', cabCount:1, linkedin:'https://fr.linkedin.com/in/aurelie-yiflach-tenenbaum-4b756a16', confiance:'Elevee', conn:['leleu'], orgs:['cncgp'] },
+  { id:'c237', name:'Bruno ZARAYA', org:'TREE FAMILY', cabCount:1, linkedin:'https://fr.linkedin.com/in/bruno-zaraya-511b4b2b', confiance:'Elevee', conn:['damien'], orgs:['cncgp'] },
+  { id:'c238', name:'Daniel ZENATY', org:'AVIRE FINANCE', cabCount:1, linkedin:'https://www.linkedin.com/in/daniel-zenaty-3a3442?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BlaaeNVG7RV2t%2B17h%2FDbcaQ%3D%3D', confiance:'', conn:['pierre'], orgs:['cncef'] },
 ];
 
 const nodes = [];
@@ -400,6 +430,7 @@ function cgpColor(c) {
   if (inBoth) return c.confiance === 'Elevee' ? '#c084fc' : '#a78bfa';
   if (c.orgs[0] === 'cncgp')   return c.confiance === 'Elevee' ? '#34d399' : '#fb923c';
   if (c.orgs[0] === 'anacofi') return c.confiance === 'Elevee' ? '#ec4899' : '#f472b6';
+  if (c.orgs[0] === 'cncef') return '#60a5fa';
   return '#34d399';
 }
 
@@ -463,6 +494,7 @@ function isVisible(node) {
   if (activeFilter === 'multi') return node.multi;
   if (activeFilter === 'cncgp') return node.orgs.includes('cncgp');
   if (activeFilter === 'anacofi') return node.orgs.includes('anacofi');
+  if (activeFilter === 'cncef') return node.orgs.includes('cncef');
   return node.conn && node.conn.includes(activeFilter);
 }
 
@@ -639,7 +671,7 @@ function getNodeAt(mx, my) {
 }
 
 const ANCHOR_LABEL = { damien:'Damien', pierre:'Pierre', olric:'Olric', sahira:'Sahira', amelie:'Amélie', leleu:'Sébastien' };
-const BASE_LABEL   = { cncgp:'CNCGP', anacofi:'Anacofi' };
+const BASE_LABEL   = { cncgp:'CNCGP', anacofi:'Anacofi', cncef:'CNCEF' };
 
 canvas.addEventListener('mousemove', e => {
   const mx = e.clientX, my = e.clientY;
@@ -741,7 +773,9 @@ function openCard(n) {
     const an = cgpList.filter(c => c.orgs.includes('anacofi')).length;
     html += '<div class="card-row"><span class="card-label">Répartition</span><br>';
     html += '<span class="card-chip cncgp" style="margin-right:4px">CNCGP ' + cn + '</span>';
-    html += '<span class="card-chip anacofi">Anacofi ' + an + '</span></div>';
+    const cf = cgpList.filter(c => c.orgs.includes('cncef')).length;
+    html += '<span class="card-chip anacofi" style="margin-right:4px">Anacofi ' + an + '</span>';
+    html += '<span class="card-chip cncef">CNCEF ' + cf + '</span></div>';
     if (multiC) html += '<div class="card-row"><span class="card-label">dont multi-connectés</span><br>' + multiC + '</div>';
     html += '<div class="card-row" style="margin-top:10px"><span class="card-label">Liste des CGP</span></div>';
     html += '<div style="max-height:240px;overflow-y:auto;margin-top:6px;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px">';
@@ -749,7 +783,7 @@ function openCard(n) {
       const tierMark = c.conn.length >= 5 ? '<span style="color:#d946ef">●</span> '
                      : c.conn.length >= 3 ? '<span style="color:#f87171">●</span> '
                      : c.conn.length === 2 ? '<span style="color:#fbbf24">●</span> ' : '';
-      const baseTag = c.orgs.map(o => '<span style="color:' + (o==='cncgp'?'#6ee7b7':'#f9a8d4') + ';font-size:9px;font-family:monospace">' + BASE_LABEL[o] + '</span>').join(' ');
+      const baseTag = c.orgs.map(o => '<span style="color:' + (o==='cncgp'?'#6ee7b7':o==='anacofi'?'#f9a8d4':'#93c5fd') + ';font-size:9px;font-family:monospace">' + BASE_LABEL[o] + '</span>').join(' ');
       html += '<div style="font-size:12px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04)">';
       html += tierMark + '<a href="' + escapeHtml(c.linkedin) + '" target="_blank" rel="noopener" style="color:#d4c8ff;text-decoration:none">' + escapeHtml(c.name) + '</a>';
       html += ' ' + baseTag;
